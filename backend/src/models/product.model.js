@@ -48,6 +48,7 @@ const productSchema = new mongoose.Schema(
     // keep your existing extras/variants/colors/etc.
     extras: String,
     color: [{ colorName: String, image: String }],
+    size: [{ sizeName: String }],
     variant: [
       {
         searchName: String,

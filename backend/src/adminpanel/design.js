@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tbody.innerHTML = ""; // Clear table first
 
         productsToRender.forEach((item, index) => {
-          const colors = item.color.map((color) => color.colorName).join(", ");
+          const sizes = item.size.map((size) => size.sizeName).join(", ");
           const code1 = `<tr id="p-${
             item._id
           }" style="animation: slideIn 0.5s ease-in-out;">
@@ -441,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           <td>${item.sellingPrice}</td>
                           <td>${item.parentCategory}</td>
                           <td>${item.parentSubcategory}</td>
-                          <td>${colors}</td>
+                          <td>${sizes}</td>
                           <td>${item.stock}</td>
                           <td> <div class="action-buttons">
                                 <button class="btn-action" title="View Details">
@@ -1016,6 +1016,100 @@ function handleChange() {
     quantityCountt.style.display = "none";
     if (quantityInput) quantityInput.style.display = "none";
   }
+}
+function sizes() {
+  const number = document.querySelector("#sizes").value;
+  const input = document.querySelector(".sizesInput");
+  const code = `<label for="size">
+              <i class="fa-solid fa-palette"></i>
+              <input
+                type="text"
+                name="size"
+                id="size"
+                placeholder="Enter product size"
+                required
+              />
+            </label>`;
+  for (let i = 1; i <= number; i++) {
+    input.innerHTML += code;
+  }
+}
+const numbers = document.querySelector("#sizes");
+numbers.addEventListener("input", () => {
+  const count = numbers.value;
+  if (count > 8) {
+    alert("You cannot put more than 8 sizes");
+    return;
+  }
+  const input = document.querySelector(".sizesInput");
+  input.style =
+    "display: flex;flex-direction: column;gap: 10px;border-radius: 20px;border: 2px solid white;padding: 20px;";
+  input.innerHTML = "";
+
+  for (let i = 1; i <= count; i++) {
+    const code = `
+              <div style="display: flex;flex-direction:column;gap:10px;">
+                <h2>Size ${i}:</h2>
+                <label for="size${i}">
+                <i class="fa-solid fa-palette"></i>
+                <input
+                  type="text"
+                  name="size${i}"
+                  id="size${i}"
+                  placeholder="Enter size ${i}"
+                  required
+                />
+                </label>
+                
+              </div>`;
+    input.innerHTML += code;
+  }
+
+  const addBtn = document.createElement("button");
+  addBtn.id = "addSize";
+  addBtn.textContent = "Click to add a new Size";
+  addBtn.addEventListener("click", addSize);
+  input.appendChild(addBtn);
+});
+
+function addSize(e) {
+  e.preventDefault();
+  const inputs = document.querySelector(".sizesInput");
+
+  const i = inputs.querySelectorAll("input[type='text']").length + 1;
+
+  if (i > 8) {
+    alert("You cannot put more than 8 colors");
+    return;
+  }
+
+  const code = `
+    <div style="display: flex;flex-direction:column;gap:10px;">
+      <h2>Size ${i}:</h2>
+      <label for="size${i}">
+        <i class="fa-solid fa-palette"></i>
+        <input
+          type="text"
+          name="size${i}"
+          id="size${i}"
+          placeholder="Enter size ${i}"
+          required
+        />
+      </label>
+    </div>`;
+
+  // Remove old button
+  inputs.querySelector("#addSize").remove();
+
+  // Append new color block
+  inputs.insertAdjacentHTML("beforeend", code);
+
+  // Re-add the button
+  const newBtn = document.createElement("button");
+  newBtn.id = "addSize";
+  newBtn.textContent = "Click to add a new color";
+  newBtn.addEventListener("click", addColor);
+  inputs.appendChild(newBtn);
 }
 
 function colorsNumber() {

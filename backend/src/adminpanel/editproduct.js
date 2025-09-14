@@ -287,6 +287,120 @@ function addColor(e) {
   input.appendChild(newBtn);
 }
 
+const numbers = document.querySelector("#sizes");
+numbers.addEventListener("change", () => {
+  const count = number.value;
+  if (count > 8) {
+    alert("You cannot put more than 8 sizes");
+    return;
+  }
+  const input = document.querySelector(".sizesInput");
+  input.style =
+    "display: flex;flex-direction: column;gap: 10px;border-radius: 20px;border: 2px solid white;padding: 20px;";
+  input.innerHTML = "";
+
+  for (let i = 1; i <= count; i++) {
+    const code = `
+              <div style="display: flex;flex-direction:column;gap:10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h2>Size ${i}:</h2>
+                  <button type="button" onclick="deleteSize(${i})" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </div>
+                <label for="size${i}">
+                <i class="fa-solid fa-palette"></i>
+                <input
+                  type="text"
+                  name="size${i}"
+                  id="size${i}"
+                  placeholder="Enter size ${i}"
+                  required
+                />
+                </label>
+              </div>`;
+    input.innerHTML += code;
+  }
+});
+
+const inputs = document.querySelector(".sizesInput");
+inputs.style =
+  "display: flex;flex-direction: column;gap: 10px;border-radius: 20px;border: 2px solid white;padding: 20px;";
+inputs.innerHTML = "";
+function loadSizes(size) {
+  const input = document.querySelector(".sizesInput");
+  input.style =
+    "display:flex;flex-direction:column;gap:10px;border-radius:20px;border:2px solid white;padding:20px;";
+  input.innerHTML = "";
+
+  for (let i = 1; i <= size.length; i++) {
+    const code = `
+      <div class="size-row" data-index="${i}">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h2>Size ${i}:</h2>
+          <button type="button" onclick="deleteSize(${i})"
+            style="background:#ff4444;color:#fff;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-shirt"></i>
+          <input
+            type="text"
+            name="size${i}"
+            id="size${i}"
+            placeholder="Enter size ${i}"
+            value="${size[i - 1]?.sizeName ?? ""}"
+            required
+          />
+        </div>
+      </div>`;
+    input.innerHTML += code;
+  }
+
+  // Add “Add Size” button
+  const addBtn = document.createElement("button");
+  addBtn.id = "addSize";
+  addBtn.textContent = "Click to add a new size";
+  addBtn.addEventListener("click", addSize);
+  input.appendChild(addBtn);
+}
+
+function addSize(e) {
+  e.preventDefault();
+  const input = document.querySelector(".sizesInput");
+  const current = input.querySelectorAll(".size-row").length + 1;
+
+  if (current > 8) {
+    alert("You cannot put more than 8 sizes");
+    return;
+  }
+
+  // remove button to append after the new block
+  input.querySelector("#addSize")?.remove();
+
+  const code = `
+    <div class="size-row" data-index="${current}">
+      <h2>Size ${current}:</h2>
+      <label for="size${current}">
+        <i class="fa-solid fa-shirt"></i>
+        <input
+          type="text"
+          name="size${current}"
+          id="size${current}"
+          placeholder="Enter size ${current}"
+          required
+        />
+      </label>
+    </div>`;
+  input.insertAdjacentHTML("beforeend", code);
+
+  const newBtn = document.createElement("button");
+  newBtn.id = "addSize";
+  newBtn.textContent = "Click to add a new size";
+  newBtn.addEventListener("click", addSize);
+  input.appendChild(newBtn);
+}
 function addVariant(e) {
   e.preventDefault();
   const input = document.querySelector(".variantInput");
@@ -655,7 +769,9 @@ function initPage() {
         : Array.isArray(data?.model)
         ? data.model
         : [];
-
+      const size = Array.isArray(data?.size) ? data.size : [];
+      document.querySelector("#sizes").value = size.length;
+      loadSizes(size);
       const imageInput = document.querySelectorAll(".images");
       const imagesInput = document.querySelectorAll(".image-input");
       const videoInput = document.querySelector(".video-upload-container");
@@ -1640,6 +1756,17 @@ document.querySelector("#submit").addEventListener("click", async (e) => {
       }
     }
   });
+  // just before the axios.put call:
+  const sizeInputs = document.querySelectorAll(
+    'input[type="text"][id^="size"]'
+  );
+  sizeInputs.forEach((el) => {
+    const idx = el.id.match(/\d+/)?.[0];
+    const val = el.value.trim();
+    if (idx && val) {
+      formData.append(`sizeName${idx}`, val);
+    }
+  });
 
   try {
     const response = await axios.put("/api/product", formData, {
@@ -1740,6 +1867,42 @@ function deleteColor(index) {
     .catch((error) => {
       alert(
         "Failed to delete color: " +
+          (error.response?.data?.message || error.message)
+      );
+      document.querySelector("main").style = "opacity: 1";
+      document.querySelector(".delete-loader").style = "display: none";
+    });
+}
+function deleteSize(index) {
+  const productId = url.searchParams.get("id");
+  if (!productId) {
+    alert("Product ID not found");
+    return;
+  }
+
+  document.querySelector("main").style = "opacity: 0.5";
+  document.querySelector(".delete-loader").style = "display: block";
+
+  axios
+    .delete(`/api/delete-size/${productId}/${index - 1}`)
+    .then((response) => {
+      alert(response.data.message);
+      document.querySelector("main").style = "opacity: 1";
+      document.querySelector(".delete-loader").style = "display: none";
+
+      // remove the specific DOM block (1-based -> 0-based)
+      const rows = document.querySelectorAll(".sizesInput .size-row");
+      const row = rows[index - 1];
+      row?.remove();
+
+      // update the heading numbers (optional)
+      document.querySelectorAll(".sizesInput .size-row h2").forEach((h, i) => {
+        h.textContent = `Size ${i + 1}:`;
+      });
+    })
+    .catch((error) => {
+      alert(
+        "Failed to delete size: " +
           (error.response?.data?.message || error.message)
       );
       document.querySelector("main").style = "opacity: 1";

@@ -894,6 +894,31 @@ app.delete("/api/delete-color/:productId/:colorIndex", async (req, res) => {
     res.status(500).json({ message: "Error deleting color" });
   }
 });
+app.delete("/api/delete-size/:productId/:sizeIndex", async (req, res) => {
+  try {
+    const { productId, sizeIndex } = req.params;
+
+    // Find the product
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Validate the index
+    if (sizeIndex < 0 || sizeIndex >= product.size.length) {
+      return res.status(400).json({ message: "Invalid size index" });
+    }
+
+    // Remove the size at that index
+    product.size.splice(sizeIndex, 1);
+    await product.save();
+
+    res.status(200).json({ message: "Size deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting size:", error);
+    res.status(500).json({ message: "Error deleting size" });
+  }
+});
 
 app.get("/api/active-users-count", async (req, res) => {
   try {

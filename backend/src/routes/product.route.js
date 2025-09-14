@@ -212,6 +212,20 @@ router.post(
           image: imageData?.url || null,
         });
       }
+      // ---- Build sizes array like colors (size1, size2, ...) ----
+      const sizeVariants = [];
+      const sizeKeys = Object.keys(req.body)
+        .filter((key) => /^size\d+$/.test(key))
+        .sort(
+          (a, b) =>
+            parseInt(a.replace("size", "")) - parseInt(b.replace("size", ""))
+        );
+
+      for (const sizeKey of sizeKeys) {
+        const sizeName = (req.body[sizeKey] || "").trim();
+        if (!sizeName) continue;
+        sizeVariants.push({ sizeName }); // or { label: sizeName } if your schema uses "label"
+      }
 
       const variantArray = [];
       const variantKeys = Object.keys(req.body).filter((key) =>
@@ -286,6 +300,7 @@ router.post(
           publicId: img.publicId,
         })),
         video: videoData, // Add video data to the product
+        size: sizeVariants,
         color: colorVariants,
         variant: variantArray,
         model: modelArray,
@@ -776,6 +791,22 @@ router.put("/", upload.any(), async (req, res) => {
         image: imageData
           ? imageData.url
           : existingProduct.color[index - 1]?.image,
+      });
+    }
+    // ---- Build size variants (sizeName1, sizeName2, etc.) ----
+    const sizeVariants = [];
+    const sizeKeys = Object.keys(req.body).filter((key) =>
+      /^sizeName\d+$/.test(key)
+    );
+
+    for (const sizeKey of sizeKeys) {
+      const index = sizeKey.replace("sizeName", "");
+      const sizeName = req.body[sizeKey]?.trim();
+
+      if (!sizeName) continue; // Skip if empty
+
+      sizeVariants.push({
+        sizeName,
       });
     }
 
