@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="logo1.png" />
+    <title>YugTech - Customer Chat App</title>
+    <link rel="stylesheet" href="design.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/6a696bf81d.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="chatbot-wrap">
+      <!-- LEFT: Users list -->
+      <aside class="chatbot-users" id="chatbot-users">
+        <div class="chatbot-users__header">
+          <h3><i class="fas fa-users"></i> Users</h3>
+          <label class="chatbot-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              id="chatbot-user-search"
+              type="text"
+              placeholder="Search user..."
+            />
+          </label>
+        </div>
+        <ul id="chatbot-users-list" class="chatbot-users__list">
+          <!-- populated by JS -->
+        </ul>
+      </aside>
+
+      <!-- RIGHT: Chat area -->
+      <section class="chatbot-chat" id="chatbot-chat">
+        <div class="chatbot-chat__header">
+          <!-- Mobile-only button to go back to Users -->
+          <button
+            id="mobile-users-btn"
+            class="mobile-users-btn"
+            type="button"
+            aria-label="Back to users"
+          >
+            <i class="fa-solid fa-users"></i>
+            <span>Users</span>
+          </button>
+
+          <div>
+            <h3 id="chatbot-active-name">Select a user</h3>
+            <small id="chatbot-active-id"></small>
+          </div>
+          <div class="chatbot-chat__status" id="chatbot-active-status">—</div>
+        </div>
+
+        <div id="chatbot-messages" class="chatbot-chat__messages">
+          <!-- messages will append here -->
+        </div>
+
+        <form
+          id="chatbot-input-form"
+          class="chatbot-chat__input"
+          onsubmit="return false;"
+        >
+          <!-- Attachments preview row -->
+          <div
+            id="chatbot-attachments"
+            class="chatbot-attachments"
+            style="display: none"
+          ></div>
+
+          <input
+            id="chatbot-input"
+            type="text"
+            placeholder="Type a message..."
+            autocomplete="off"
+          />
+          <button
+            id="chatbot-attach"
+            type="button"
+            title="Attach image"
+            class="chatbot-attach-btn"
+          >
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+          <input
+            id="chatbot-file"
+            type="file"
+            accept="image/*"
+            multiple
+            hidden
+          />
+
+          <!-- Saved Replies toggle -->
+          <button
+            id="chatbot-saved-btn"
+            type="button"
+            title="Saved replies"
+            class="chatbot-saved-btn"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-message"></i>
+          </button>
+
+          <!-- Saved Replies panel -->
+          <div id="chatbot-saved-panel" class="chatbot-saved-panel hidden">
+            <div class="chatbot-saved-panel__header">
+              <strong>Saved replies</strong>
+              <button
+                id="chatbot-saved-close"
+                type="button"
+                class="chatbot-saved-close"
+                title="Close"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <!-- 🔎 Search under header -->
+            <div class="chatbot-saved-searchwrap">
+              <input
+                id="chatbot-saved-search"
+                type="search"
+                placeholder="Search replies…"
+                autocomplete="off"
+              />
+            </div>
+
+            <ul id="chatbot-saved-list" class="chatbot-saved-list">
+              <!-- populated by JS -->
+            </ul>
+          </div>
+
+          <button id="chatbot-send" type="button" title="Send">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </section>
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="chatbot.js"></script>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="logo1.png" />
+    <title>YugTech's Admin Panel</title>
+    <link rel="stylesheet" href="newdesign.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <img src="logo.png" alt="YugTech Logo" />
+          </div>
+          <h1 class="company-name">YugTech</h1>
+        </div>
+
+        <div class="user-profile">
+          <div class="avatar">
+            <img src="admin1.jpg" alt="Admin" />
+          </div>
+          <div class="user-info">
+            <h3>Hello, Admin!</h3>
+            <p>Administrator</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-section">
+              <h2 class="section-title">Product Management</h2>
+              <ul>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Product</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Manage Products</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-section">
+              <h2 class="section-title">Order Management</h2>
+              <ul>
+                <li>
+                  <a href="#" class="nav-item active">
+                    <i class="fas fa-box"></i>
+                    <span>Manage Orders</span>
+                    <span class="badge">5 new</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>Shipped</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Delivered</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="nav-item">
+                    <i class="fas fa-times-circle"></i>
+                    <span>Cancelled</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="theme-toggle">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+            <div class="toggle-switch">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+          <a href="#" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-header">
+          <div class="header-left">
+            <button class="menu-toggle">
+              <i class="fas fa-bars"></i>
+            </button>
+            <h2 class="page-title">Manage Orders</h2>
+          </div>
+          <div class="header-right">
+            <div class="search-global">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search anything..." />
+            </div>
+            <div class="header-actions">
+              <button class="notification-btn">
+                <i class="fas fa-bell"></i>
+                <span class="badge badge-red">5</span>
+              </button>
+              <button class="settings-btn">
+                <i class="fas fa-cog"></i>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="content-wrapper">
+          <div class="content-header">
+            <div class="filter-tabs">
+              <button class="filter-tab active">Today's Orders</button>
+              <button class="filter-tab">This Week</button>
+              <button class="filter-tab">This Month</button>
+              <button class="filter-tab">All Orders</button>
+            </div>
+            <div class="content-actions">
+              <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  placeholder="Search by customer name or order ID"
+                />
+              </div>
+              <div class="dropdown">
+                <button class="dropdown-btn">
+                  <i class="fas fa-filter"></i>
+                  <span>Filter</span>
+                </button>
+                <div class="dropdown-content">
+                  <a href="#">Processing</a>
+                  <a href="#">Shipped</a>
+                  <a href="#">Delivered</a>
+                  <a href="#">Cancelled</a>
+                </div>
+              </div>
+              <button class="export-btn">
+                <i class="fas fa-download"></i>
+                <span>Export</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="orders-table-container">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Products</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#ORD-2024-1001</td>
+                  <td>May 20, 2024</td>
+                  <td>
+                    <div class="customer-info">
+                      <span class="customer-name">Anish Shrestha</span>
+                      <span class="customer-email">sildhunga12@gmail.com</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-summary">
+                      <span>Samsung Galaxy S24 Ultra (1)</span>
+                      <button class="see-details-btn">See Details</button>
+                    </div>
+                  </td>
+                  <td>$ 149,999</td>
+                  <td>
+                    <span class="status-badge status-processing"
+                      >Processing</span
+                    >
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="action-btn dropdown-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="action-dropdown">
+                        <a href="#"><i class="fas fa-eye"></i> View</a>
+                        <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="#" class="text-danger"
+                          ><i class="fas fa-trash"></i> Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#ORD-2024-1002</td>
+                  <td>May 20, 2024</td>
+                  <td>
+                    <div class="customer-info">
+                      <span class="customer-name">Sahil Shrestha</span>
+                      <span class="customer-email">sahil@example.com</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-summary">
+                      <span>iPhone 15 Pro (1), AirPods Pro (1)</span>
+                      <button class="see-details-btn">See Details</button>
+                    </div>
+                  </td>
+                  <td>$ 189,999</td>
+                  <td>
+                    <span class="status-badge status-shipped">Shipped</span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="action-btn dropdown-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="action-dropdown">
+                        <a href="#"><i class="fas fa-eye"></i> View</a>
+                        <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="#" class="text-danger"
+                          ><i class="fas fa-trash"></i> Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#ORD-2024-1003</td>
+                  <td>May 19, 2024</td>
+                  <td>
+                    <div class="customer-info">
+                      <span class="customer-name">Manish Shrestha</span>
+                      <span class="customer-email">manish@example.com</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-summary">
+                      <span>MacBook Pro M3 (1)</span>
+                      <button class="see-details-btn">See Details</button>
+                    </div>
+                  </td>
+                  <td>$ 299,999</td>
+                  <td>
+                    <span class="status-badge status-delivered">Delivered</span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="action-btn dropdown-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="action-dropdown">
+                        <a href="#"><i class="fas fa-eye"></i> View</a>
+                        <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="#" class="text-danger"
+                          ><i class="fas fa-trash"></i> Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#ORD-2024-1004</td>
+                  <td>May 19, 2024</td>
+                  <td>
+                    <div class="customer-info">
+                      <span class="customer-name">Sujal Chitrakar</span>
+                      <span class="customer-email">sujal@example.com</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-summary">
+                      <span
+                        >Samsung Galaxy Watch 6 (1), Galaxy Buds Pro (1)</span
+                      >
+                      <button class="see-details-btn">See Details</button>
+                    </div>
+                  </td>
+                  <td>$ 59,999</td>
+                  <td>
+                    <span class="status-badge status-cancelled">Cancelled</span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="action-btn dropdown-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="action-dropdown">
+                        <a href="#"><i class="fas fa-eye"></i> View</a>
+                        <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="#" class="text-danger"
+                          ><i class="fas fa-trash"></i> Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#ORD-2024-1005</td>
+                  <td>May 18, 2024</td>
+                  <td>
+                    <div class="customer-info">
+                      <span class="customer-name">Abishek Shrestha</span>
+                      <span class="customer-email">abishek@example.com</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-summary">
+                      <span>Dell XPS 15 (1), Logitech MX Master 3 (1)</span>
+                      <button class="see-details-btn">See Details</button>
+                    </div>
+                  </td>
+                  <td>$ 249,999</td>
+                  <td>
+                    <span class="status-badge status-processing"
+                      >Processing</span
+                    >
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="action-btn dropdown-trigger">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="action-dropdown">
+                        <a href="#"><i class="fas fa-eye"></i> View</a>
+                        <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="#" class="text-danger"
+                          ><i class="fas fa-trash"></i> Delete</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Order Details Modal -->
+          <div class="modal" id="orderDetailsModal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Order Details - #ORD-2024-1001</h3>
+                <button class="close-modal">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="order-details-grid">
+                  <div class="order-info-section">
+                    <h4>Order Information</h4>
+                    <div class="info-group">
+                      <div class="info-item">
+                        <span class="info-label">Order Date:</span>
+                        <span class="info-value">May 20, 2024</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value status-processing"
+                          >Processing</span
+                        >
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Payment Method:</span>
+                        <span class="info-value">Cash on Delivery</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="customer-info-section">
+                    <h4>Customer Information</h4>
+                    <div class="info-group">
+                      <div class="info-item">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">Anish Shrestha</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">sildhunga12@gmail.com</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">+977 9812345678</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">Kathmandu, Nepal</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="product-details-section">
+                    <h4>Product Details</h4>
+                    <div class="product-details-list">
+                      <div class="product-detail-item">
+                        <div class="product-image">
+                          <img
+                            src="/placeholder.svg?height=80&width=80"
+                            alt="Samsung Galaxy S24 Ultra"
+                          />
+                        </div>
+                        <div class="product-info">
+                          <h5>Samsung Galaxy S24 Ultra</h5>
+                          <div class="product-meta">
+                            <div class="meta-item">
+                              <span class="meta-label">Quantity:</span>
+                              <span class="meta-value">1</span>
+                            </div>
+                            <div class="meta-item">
+                              <span class="meta-label">Color:</span>
+                              <span class="meta-value">Titanium Black</span>
+                            </div>
+                            <div class="meta-item">
+                              <span class="meta-label">Variant:</span>
+                              <span class="meta-value">12GB/512GB</span>
+                            </div>
+                            <div class="meta-item">
+                              <span class="meta-label">Price:</span>
+                              <span class="meta-value">$ 149,999</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="customer-note-section">
+                    <h4>Customer Note</h4>
+                    <div class="customer-note">
+                      <p>
+                        Please deliver the package before 6 PM. I need it
+                        urgently for a presentation tomorrow. Thank you!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="order-total">
+                  <span>Total:</span>
+                  <span class="total-amount">$ 149,999</span>
+                </div>
+                <div class="modal-actions">
+                  <button class="btn btn-outline">Cancel Order</button>
+                  <button class="btn btn-primary">Update Status</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Details Modal -->
+          <div class="modal" id="userDetailsModal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>User Details</h3>
+                <button class="close-modal">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="user-details-grid">
+                  <div class="user-info-section">
+                    <h4>Personal Information</h4>
+                    <div class="info-group">
+                      <div class="info-item">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">Anish Shrestha</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">sildhunga12@gmail.com</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">+977 9812345678</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">Kathmandu, Nepal</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="info-label">Joined Date:</span>
+                        <span class="info-value">January 15, 2023</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="user-stats-section">
+                    <h4>User Statistics</h4>
+                    <div class="stats-cards">
+                      <div class="stat-card">
+                        <div class="stat-icon">
+                          <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                          <span class="stat-value">12</span>
+                          <span class="stat-label">Total Orders</span>
+                        </div>
+                      </div>
+                      <div class="stat-card">
+                        <div class="stat-icon">
+                          <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                          <span class="stat-value">$ 349,850</span>
+                          <span class="stat-label">Total Spent</span>
+                        </div>
+                      </div>
+                      <div class="stat-card">
+                        <div class="stat-icon">
+                          <i class="fas fa-undo"></i>
+                        </div>
+                        <div class="stat-info">
+                          <span class="stat-value">1</span>
+                          <span class="stat-label">Returns</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-history-section">
+                    <h4>Order History</h4>
+                    <div class="order-history-list">
+                      <div class="order-history-item">
+                        <div class="order-history-header">
+                          <div class="order-id">#ORD-2024-1001</div>
+                          <div class="order-date">May 20, 2024</div>
+                          <div class="order-status status-processing">
+                            Processing
+                          </div>
+                        </div>
+                        <div class="order-history-details">
+                          <div class="order-products">
+                            Samsung Galaxy S24 Ultra (1)
+                          </div>
+                          <div class="order-amount">$ 149,999</div>
+                        </div>
+                      </div>
+                      <div class="order-history-item">
+                        <div class="order-history-header">
+                          <div class="order-id">#ORD-2024-0892</div>
+                          <div class="order-date">April 15, 2024</div>
+                          <div class="order-status status-delivered">
+                            Delivered
+                          </div>
+                        </div>
+                        <div class="order-history-details">
+                          <div class="order-products">
+                            Apple AirPods Pro (1), iPhone 15 Case (1)
+                          </div>
+                          <div class="order-amount">$ 39,999</div>
+                        </div>
+                      </div>
+                      <div class="order-history-item">
+                        <div class="order-history-header">
+                          <div class="order-id">#ORD-2024-0754</div>
+                          <div class="order-date">March 10, 2024</div>
+                          <div class="order-status status-delivered">
+                            Delivered
+                          </div>
+                        </div>
+                        <div class="order-history-details">
+                          <div class="order-products">
+                            iPad Air (1), Apple Pencil (1)
+                          </div>
+                          <div class="order-amount">$ 89,999</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="modal-actions">
+                  <button class="btn btn-outline">Block User</button>
+                  <button class="btn btn-primary">Edit Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sales Overview Section -->
+          <div class="sales-overview-section">
+            <h3 class="section-title">Sales Overview</h3>
+            <div class="sales-cards">
+              <div class="sales-card">
+                <div class="sales-card-header">
+                  <h4>Today's Sales</h4>
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="sales-card-body">
+                  <div class="sales-stat">
+                    <span class="sales-amount">$ 399,997</span>
+                    <span class="sales-change positive">+12.5%</span>
+                  </div>
+                  <div class="sales-meta">
+                    <div class="meta-item">
+                      <span class="meta-label">Orders:</span>
+                      <span class="meta-value">5</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-label">Top Product:</span>
+                      <span class="meta-value">Samsung Galaxy S24 Ultra</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sales-card">
+                <div class="sales-card-header">
+                  <h4>This Week</h4>
+                  <i class="fas fa-calendar-week"></i>
+                </div>
+                <div class="sales-card-body">
+                  <div class="sales-stat">
+                    <span class="sales-amount">$ 2,499,985</span>
+                    <span class="sales-change positive">+8.3%</span>
+                  </div>
+                  <div class="sales-meta">
+                    <div class="meta-item">
+                      <span class="meta-label">Orders:</span>
+                      <span class="meta-value">28</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-label">Top Product:</span>
+                      <span class="meta-value">MacBook Pro M3</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sales-card">
+                <div class="sales-card-header">
+                  <h4>This Month</h4>
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="sales-card-body">
+                  <div class="sales-stat">
+                    <span class="sales-amount">$ 8,749,950</span>
+                    <span class="sales-change positive">+15.7%</span>
+                  </div>
+                  <div class="sales-meta">
+                    <div class="meta-item">
+                      <span class="meta-label">Orders:</span>
+                      <span class="meta-value">112</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-label">Avg. Order:</span>
+                      <span class="meta-value">$ 78,125</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Enquiries Section -->
+          <div class="customer-enquiries-section">
+            <div class="section-header">
+              <h3 class="section-title">Customer Enquiries</h3>
+              <button class="view-all-btn">View All</button>
+            </div>
+            <div class="enquiries-table-container">
+              <table class="enquiries-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Anish Shrestha</td>
+                    <td>sildhunga12@gmail.com</td>
+                    <td class="message-cell">
+                      <div class="message-preview">
+                        Do you have Samsung A30 in stock?
+                      </div>
+                    </td>
+                    <td>May 20, 2024</td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="action-btn view-btn">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn reply-btn">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Sahil Shrestha</td>
+                    <td>sahil@example.com</td>
+                    <td class="message-cell">
+                      <div class="message-preview">
+                        When will the iPhone 16 be available for pre-order?
+                      </div>
+                    </td>
+                    <td>May 19, 2024</td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="action-btn view-btn">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn reply-btn">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Manish Shrestha</td>
+                    <td>manish@example.com</td>
+                    <td class="message-cell">
+                      <div class="message-preview">
+                        Do you offer installment payment options for MacBooks?
+                      </div>
+                    </td>
+                    <td>May 18, 2024</td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="action-btn view-btn">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn reply-btn">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

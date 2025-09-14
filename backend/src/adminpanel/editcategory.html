@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dzgwsrqnf/image/upload/v1747716226/logo1_olgsq5.png"
+    />
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="editproduct-style.css" />
+    <style>
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #fff;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: none;
+        box-sizing: border-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: rotation 1s linear infinite;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <aside style="margin-left: 0px">
+        <nav>
+          <div class="logo-container">
+            <img src="logo.png" alt="logo" width="100%" height="100%" />
+          </div>
+          <h1>YUGTech's Admin Panel</h1>
+        </nav>
+        <section class="form">
+          <h2 class="form-title">Edit Category</h2>
+          <form class="form-style">
+            <label for="category">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <input type="text" name="category" id="category" />
+            </label>
+            <label for="category-image">
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="categoryImage"
+                id="category-image"
+                accept="image/*"
+              />
+            </label>
+            <label for="preview">
+              <div class="preview-container"></div>
+            </label>
+            <input type="hidden" name="hidden-id" id="hidden-id" />
+            <input type="submit" value="Save" id="submit" />
+          </form>
+        </section>
+        <footer>
+          <h2>© 2025 Online Clothing Application. All Rights Reserved..</h2>
+        </footer>
+        <p class="delete-loader">Updating Category...</p>
+      </aside>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- <script src="script.js"></script> -->
+  <script src="editcategory.js"></script>
+  <script
+    src="https://kit.fontawesome.com/6a696bf81d.js"
+    crossorigin="anonymous"
+  ></script>
+</html>

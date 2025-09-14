@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dzgwsrqnf/image/upload/v1747716226/logo1_olgsq5.png"
+    />
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="editproduct-style.css" />
+    <style>
+      .preview-container,
+      .preview-logo {
+        width: 100px;
+        height: 100px;
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+      }
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #fff;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: none;
+        box-sizing: border-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: rotation 1s linear infinite;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <aside style="margin-left: 0px">
+        <nav>
+          <div class="logo-container">
+            <img src="logo.png" alt="logo" width="100%" height="100%" />
+          </div>
+          <h1>YUGTech's Admin Panel</h1>
+        </nav>
+        <section class="form">
+          <h2 class="form-title">Edit Sub-Category</h2>
+          <form action="http://localhost:8080/admin" class="form-style">
+            <label for="category">
+              <i class="fa-solid fa-sitemap"></i>
+              <input type="text" name="subcategory" id="subcategory" />
+            </label>
+            <label for="catDown" class="select-label">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <select
+                name="parentCategory"
+                class="catDown"
+                id="catDown"
+              ></select>
+            </label>
+            <label for="subcategory-image">
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="subcategoryImage"
+                id="subcategory-image"
+                accept="image/*"
+              />
+            </label>
+            <label for="preview">
+              <div class="preview-container"></div>
+            </label>
+            <label for="subcategory-logo">
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="subcategoryLogo"
+                id="subcategory-logo"
+                accept="image/*"
+              />
+            </label>
+            <label for="preview">
+              <div class="preview-logo"></div>
+            </label>
+            <input type="hidden" name="hidden-id" id="hidden-id" />
+            <input type="submit" value="Save" id="submit" />
+          </form>
+        </section>
+        <footer>
+          <h2>© 2025 Online Clothing Application. All Rights Reserved..</h2>
+        </footer>
+        <p class="delete-loader">Updating Sub-Category...</p>
+      </aside>
+    </main>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- <script src="script.js"></script> -->
+  <script src="editsubcategory.js"></script>
+  <script
+    src="https://kit.fontawesome.com/6a696bf81d.js"
+    crossorigin="anonymous"
+  ></script>
+</html>

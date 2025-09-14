@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="logo1.png" />
+    <title>YugTech's Admin Panel</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main>
+      <div class="container">
+        <div class="profile">
+          <div class="image">
+            <img src="admin.jpg" alt="anish" />
+          </div>
+          <div class="greeting">Hello, admin!</div>
+        </div>
+        <hr />
+        <ul>
+          <li class="active" onclick="showList(0)" class="menu-list">
+            Dashboard
+          </li>
+          <li onclick="showList(1)" class="menu-list">Add Category</li>
+          <li onclick="showList(2)" class="menu-list">Add Sub-category</li>
+          <li onclick="showList(3)" class="menu-list">Add Product</li>
+          <li onclick="showList(4)" class="menu-list">Manage Category</li>
+          <li onclick="showList(5)" class="menu-list">Manage Sub-category</li>
+          <li onclick="showList(6)" class="menu-list">Manage Product</li>
+          <li onclick="showList(7)" class="menu-list">Manage Orders</li>
+          <li onclick="showList(8)" class="menu-list">Orders Shipped</li>
+          <li onclick="showList(9)" class="menu-list">Orders Delivered</li>
+          <li onclick="showList(10)" class="menu-list">Orders Cancelled</li>
+        </ul>
+      </div>
+      <aside>
+        <nav>
+          <div class="logo-container">
+            <img
+              src="logo.png"
+              alt="logo"
+              width="100%"
+              height="100%"
+              style="filter: brightness(0%)"
+            />
+          </div>
+          <h1>YUGTech's Admin Panel</h1>
+          <button onclick="showMenu()" class="menu">Menu</button>
+
+          <div class="dark-mode">
+            <div class="circle"></div>
+            <div class="light-mode">Dark</div>
+            <div class="darkMode dark-mode-shift">Light</div>
+          </div>
+        </nav>
+        <section class="form">
+          <h2 class="form-title">Dashboard</h2>
+          <div class="dashboard menu-content" data-heading="Dashboard">
+            <div class="dashboard-container">
+              <div class="dashboard-items" onclick="showList(4)">
+                <h3>Total Categories:</h3>
+              </div>
+              <div class="dashboard-items" onclick="showList(5)">
+                <h3>Total Sub-Categories:</h3>
+              </div>
+              <div class="dashboard-items" onclick="showList(6)">
+                <h3>Total Product:</h3>
+              </div>
+              <div class="dashboard-items" onclick="showList(7)">
+                <h3>Orders to deliever:</h3>
+              </div>
+              <div class="dashboard-items" onclick="showList(10)">
+                <h3>Cancelled Orders:</h3>
+              </div>
+              <div class="dashboard-items"><h3>Total Sales:</h3></div>
+              <div class="dashboard-items"><h3>Total Customers:</h3></div>
+            </div>
+            <div class="orders-container">
+              <h2><u>Orders for today:</u></h2>
+              <table cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Order Date</th>
+                    <th>Order Id</th>
+                    <th>Customer Name</th>
+                    <th>Products</th>
+                    <th>Quantity</th>
+                    <th>Color</th>
+                    <th>Variant</th>
+                    <th>Phone model (For Cover)</th>
+                    <th>Shipping Address</th>
+                    <th>Contact</th>
+                    <th>Customer Note</th>
+                    <!-- <th>Payment Method</th>
+                    <th>Payment Status</th> -->
+                    <th>Status</th>
+                    <th>Action Button</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <form
+            action="/api/category"
+            class="category hide form-style menu-content"
+            method="post"
+            enctype="multipart/form-data"
+            data-heading="Add Category"
+            onsubmit="showLoadingScreen('add-category')"
+          >
+            <label for="category">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <input
+                type="text"
+                name="categoryName"
+                id="category"
+                placeholder="Enter category name"
+                required
+              />
+            </label>
+            <label for="category-image">
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="categoryImage"
+                id="category-image"
+                accept="image/*"
+              />
+            </label>
+
+            <input type="submit" value="Submit" />
+          </form>
+          <form
+            action="/api/subcategory"
+            class="sub-category hide form-style menu-content"
+            method="post"
+            enctype="multipart/form-data"
+            data-heading="Add Subcategory"
+            onsubmit="showLoadingScreen('add-subcategory')"
+          >
+            <label for="sub-category">
+              <i class="fa-solid fa-sitemap"></i>
+              <input
+                type="text"
+                name="subcategoryName"
+                id="sub-category"
+                placeholder="Enter sub-category name"
+                required
+              />
+            </label>
+            <label for="catDown" class="select-label">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <select
+                name="parentCategory"
+                class="catDown"
+                id="catDown"
+              ></select>
+            </label>
+            <label for="subcategory-image">
+              Image:
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="subcategoryImage"
+                id="subcategory-image"
+                accept="image/*"
+              />
+            </label>
+            <label for="subcategory-logo">
+              Logo:
+              <i class="fa-solid fa-image"></i>
+              <input
+                type="file"
+                name="subcategoryLogo"
+                id="subcategory-logo"
+                accept="image/*"
+              />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+          <form
+            action="/api/product"
+            class="product hide form-style menu-content"
+            method="post"
+            enctype="multipart/form-data"
+            data-heading="Add Product"
+            onsubmit="showLoadingScreen('add-product')"
+          >
+            <label for="product">
+              <i class="fa-solid fa-box"></i>
+              <input
+                type="text"
+                name="name"
+                id="product"
+                placeholder="Enter product name"
+                required
+              />
+            </label>
+            <label for="costPrice">
+              <i class="fa-solid fa-tag"></i>
+              <input
+                type="number"
+                name="costPrice"
+                id="costPrice"
+                placeholder="Enter product cost price"
+                required
+              />
+            </label>
+            <label for="sellingPrice">
+              <i class="fa-solid fa-tags"></i>
+              <input
+                type="number"
+                name="sellingPrice"
+                id="sellingPrice"
+                placeholder="Enter product selling price"
+                required
+              />
+            </label>
+            <label for="stock">
+              <i class="fa-solid fa-boxes-stacked"></i>
+              <input
+                type="number"
+                name="stock"
+                id="stock"
+                placeholder="Enter product stock"
+                required
+              />
+            </label>
+            <label for="sold">
+              <i class="fa-solid fa-boxes-stacked"></i>
+              <input
+                type="number"
+                name="sold"
+                id="sold"
+                placeholder="Enter how many have been sold"
+                required
+              />
+            </label>
+            <label for="description">
+              <i class="fa-solid fa-note-sticky"></i>
+              <input
+                type="text"
+                name="description"
+                id="description"
+                placeholder="Enter product description"
+                required
+              />
+            </label>
+            <label for="colorsNumber">
+              <i class="fa-solid fa-palette"></i>
+              <input
+                type="number"
+                name="colorsNumber"
+                id="colorsNumber"
+                placeholder="Enter how many colors are there (e.g. 1, 2, 3)"
+              />
+            </label>
+            <div class="colorInput" style="display: none"></div>
+
+            <label for="cattDown" class="select-label">
+              <i class="fa-solid fa-grip-vertical"></i>
+              <select
+                name="parentCategory"
+                class="catDown phoneSpecShow"
+                id="catDown"
+                onchange="handleChange()"
+              ></select>
+            </label>
+            <label for="subDown" class="select-label">
+              <i class="fa-solid fa-sitemap"></i>
+              <select name="parentSubcategory" id="subDown"></select>
+            </label>
+            <label for="extras" class="select-label">
+              <i class="fa-solid fa-sitemap"></i>
+              <select name="extras" id="extras">
+                <option value="none" selected>None</option>
+                <option value="caraousel">Caraousel</option>
+                <option value="banner">Banner</option>
+              </select>
+            </label>
+            <label for="keyFeatures">
+              <i class="fa-solid fa-note-sticky"></i>
+              <textarea
+                type="text"
+                name="keyFeatures"
+                id="keyFeatures"
+                placeholder="Enter key features"
+                rows="15"
+                required
+              ></textarea>
+            </label>
+            <label for="variantCount" style="display: none" id="variantCountt">
+              <i class="fa-solid fa-cube"></i>
+              <input
+                type="number"
+                name="variantCount"
+                id="variantCount"
+                placeholder="Enter the number of variants available"
+              />
+            </label>
+            <div class="variantInput" style="display: none"></div>
+            <label for="coverCount" style="display: none" id="coverCountt">
+              <i class="fa-solid fa-cube"></i>
+              <input
+                type="number"
+                name="coverCount"
+                id="coverCount"
+                placeholder="Enter the number of models that this cover is available for"
+              />
+            </label>
+            <div class="coverInput" style="display: none"></div>
+
+            <div class="phoneSpecs" style="display: none">
+              <h2>Enter phone specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="processor">
+                <i class="fa-solid fa-microchip"></i>
+                <input
+                  type="text"
+                  name="processor"
+                  id="processor"
+                  placeholder="Enter processor (e.g., A16 Bionic)"
+                />
+              </label>
+
+              <label for="ram">
+                <i class="fa-solid fa-memory"></i>
+                <input
+                  type="text"
+                  name="ram"
+                  id="ram"
+                  placeholder="Enter RAM (e.g., 6GB)"
+                />
+              </label>
+
+              <label for="storage">
+                <i class="fa-solid fa-database"></i>
+                <input
+                  type="text"
+                  name="storage"
+                  id="storage"
+                  placeholder="Enter storage (e.g., 128GB/256GB/512GB)"
+                />
+              </label>
+
+              <label for="battery">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="battery"
+                  id="battery"
+                  placeholder="Enter battery info (e.g., 3349 mAh)"
+                />
+              </label>
+
+              <label for="display">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <input
+                  type="text"
+                  name="display"
+                  id="display"
+                  placeholder="Enter display info (e.g., 6.1 OLED)"
+                />
+              </label>
+
+              <label for="camera">
+                <i class="fa-solid fa-camera"></i>
+                <input
+                  type="text"
+                  name="camera"
+                  id="camera"
+                  placeholder="Enter camera info (e.g., 48MP + 12MP)"
+                />
+              </label>
+
+              <label for="frontCamera">
+                <i class="fa-solid fa-camera-retro"></i>
+                <input
+                  type="text"
+                  name="frontCamera"
+                  id="frontCamera"
+                  placeholder="Enter front camera (e.g., 12MP)"
+                />
+              </label>
+
+              <label for="os">
+                <i class="fa-solid fa-gear"></i>
+                <input
+                  type="text"
+                  name="os"
+                  id="os"
+                  placeholder="Enter OS (e.g., iOS 17)"
+                />
+              </label>
+
+              <label for="charging">
+                <i class="fa-solid fa-charging-station"></i>
+                <input
+                  type="text"
+                  name="charging"
+                  id="charging"
+                  placeholder="Enter charging type (e.g., USB-C, MagSafe)"
+                />
+              </label>
+
+              <label for="connectivity">
+                <i class="fa-solid fa-wifi"></i>
+                <input
+                  type="text"
+                  name="connectivity"
+                  id="connectivity"
+                  placeholder="Enter connectivity (e.g., 5G, Wi-Fi 6, NFC)"
+                />
+              </label>
+
+              <label for="ipRating">
+                <i class="fa-solid fa-water"></i>
+                <input
+                  type="text"
+                  name="ipRating"
+                  id="ipRating"
+                  placeholder="Enter IP rating (e.g., IP68)"
+                />
+              </label>
+              <label for="mwarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="mwarranty"
+                  id="mwarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <div class="chargerSpecs" style="display: none">
+              <h2>Enter charger specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="model">
+                <i class="fa-solid fa-box-archive"></i>
+                <input
+                  type="text"
+                  name="model"
+                  id="model"
+                  placeholder="Enter model"
+                />
+              </label>
+
+              <label for="chargeInput">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="chargeInput"
+                  id="chargeInput"
+                  placeholder="Enter input (e.g 100-240v ~ 50/60Hz 0.5A)"
+                />
+              </label>
+
+              <label for="chargeOutput">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="chargeOutput"
+                  id="chargeOutput"
+                  placeholder="Enter chargeOutput (e.g. 5V/3A, 9V/2.22A)"
+                />
+              </label>
+
+              <label for="chargeType">
+                <i class="fa-brands fa-usb"></i>
+                <input
+                  type="text"
+                  name="chargeType"
+                  id="chargeType"
+                  placeholder="Enter charging type"
+                />
+              </label>
+              <label for="connectorType">
+                <i class="fa-brands fa-usb"></i>
+                <input
+                  type="text"
+                  name="connectorType"
+                  id="connectorType"
+                  placeholder="Enter connector type (e.g. USB-C/USB-A/Lightning)"
+                />
+              </label>
+
+              <label for="compatibility">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="compatibility"
+                  id="compatibility"
+                  placeholder="Enter compatibility (e.g. Samsung, Iphone)"
+                />
+              </label>
+              <label for="cable">
+                <i class="fa-solid fa-network-wired"></i>
+                <input
+                  type="text"
+                  name="cable"
+                  id="cable"
+                  placeholder="Enter included cable (e.g. USB-C, USB-B)"
+                />
+              </label>
+              <label for="packageIncludes">
+                <i class="fa-solid fa-box"></i>
+                <input
+                  type="text"
+                  name="packageIncludes"
+                  id="packageIncludes"
+                  placeholder="Enter what packages includes (e.g. 1x cable, 1x adapter, User manual)"
+                />
+              </label>
+              <label for="warranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="warranty"
+                  id="warranty"
+                  placeholder="Enter warranty"
+                />
+              </label>
+            </div>
+            <div class="laptopSpecs" style="display: none">
+              <h2>Enter laptop specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="lprocessor">
+                <i class="fa-solid fa-microchip"></i>
+                <input
+                  type="text"
+                  name="lprocessor"
+                  id="lprocessor"
+                  placeholder="Enter processor (e.g., Intel i5)"
+                />
+              </label>
+
+              <label for="lram">
+                <i class="fa-solid fa-memory"></i>
+                <input
+                  type="text"
+                  name="lram"
+                  id="lram"
+                  placeholder="Enter RAM (e.g., 6GB)"
+                />
+              </label>
+
+              <label for="lstorage">
+                <i class="fa-solid fa-database"></i>
+                <input
+                  type="text"
+                  name="lstorage"
+                  id="lstorage"
+                  placeholder="Enter storage (e.g., 128GB/256GB/512GB SSD or HDD)"
+                />
+              </label>
+
+              <label for="lbattery">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="lbattery"
+                  id="lbattery"
+                  placeholder="Enter battery info (e.g., 3349 mAh)"
+                />
+              </label>
+
+              <label for="ldisplay">
+                <i class="fa-solid fa-laptop"></i>
+                <input
+                  type="text"
+                  name="ldisplay"
+                  id="ldisplay"
+                  placeholder="Enter display info (e.g., 14, 15.6, 16)"
+                />
+              </label>
+
+              <label for="graphics">
+                <i class="fa-solid fa-sd-card"></i>
+                <input
+                  type="text"
+                  name="graphics"
+                  id="graphics"
+                  placeholder="Enter graphics info (e.g., Intel Iris Xe, AMD Radeon 780M)"
+                />
+              </label>
+
+              <label for="ports">
+                <i class="fa-solid fa-bore-hole"></i>
+                <input
+                  type="text"
+                  name="ports"
+                  id="ports"
+                  placeholder="Enter ports (e.g., HDMI / DisplayPort)"
+                />
+              </label>
+
+              <label for="los">
+                <i class="fa-solid fa-gear"></i>
+                <input
+                  type="text"
+                  name="los"
+                  id="los"
+                  placeholder="Enter OS (e.g., Windows 11)"
+                />
+              </label>
+
+              <label for="build">
+                <i class="fa-solid fa-building"></i>
+                <input
+                  type="text"
+                  name="build"
+                  id="build"
+                  placeholder="Enter build and design (e.g., Plastic, Aluminum, Magnesium Alloy, 1.5kg)"
+                />
+              </label>
+
+              <label for="lconnectivity">
+                <i class="fa-solid fa-wifi"></i>
+                <input
+                  type="text"
+                  name="lconnectivity"
+                  id="lconnectivity"
+                  placeholder="Enter connectivity (e.g., Wi-Fi 6, NFC)"
+                />
+              </label>
+              <label for="lwarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="lwarranty"
+                  id="lwarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <div class="powerbankSpecs" style="display: none">
+              <h2>Enter powerbank specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="capacity">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="capacity"
+                  id="capacity"
+                  placeholder="Enter battery capacity (e.g., 20000 mAh)"
+                />
+              </label>
+
+              <label for="outputPort">
+                <i class="fa-solid fa-bore-hole"></i>
+                <input
+                  type="text"
+                  name="outputPort"
+                  id="outputPort"
+                  placeholder="Enter output ports (e.g., 2 USB-A, 1 USB-C)"
+                />
+              </label>
+
+              <label for="inputPort">
+                <i class="fa-solid fa-bore-hole"></i>
+                <input
+                  type="text"
+                  name="inputPort"
+                  id="inputPort"
+                  placeholder="Enter input ports (e.g., 1 USB-C, 1 Micro-USB)"
+                />
+              </label>
+
+              <label for="outputPower">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="outputPower"
+                  id="outputPower"
+                  placeholder="Enter output power (e.g., 18W)"
+                />
+              </label>
+
+              <label for="inputPower">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="inputPower"
+                  id="inputPower"
+                  placeholder="Enter input power info (e.g., 45W)"
+                />
+              </label>
+
+              <label for="chargingTech">
+                <i class="fa-solid fa-charging-station"></i>
+                <input
+                  type="text"
+                  name="chargingTech"
+                  id="chargingTech"
+                  placeholder="Enter charging tech info (e.g., PD 3.0, QC 4.0+)"
+                />
+              </label>
+
+              <label for="material">
+                <i class="fa-solid fa-building"></i>
+                <input
+                  type="text"
+                  name="material"
+                  id="material"
+                  placeholder="Enter material used (e.g., Fireproof ABS plastic)"
+                />
+              </label>
+
+              <label for="weight">
+                <i class="fa-solid fa-weight-scale"></i>
+                <input
+                  type="text"
+                  name="weight"
+                  id="weight"
+                  placeholder="Enter weight"
+                />
+              </label>
+
+              <label for="pcompatibility">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="pcompatibility"
+                  id="pcompatibility"
+                  placeholder="Enter compatibility (e.g., Laptops, smartphones, tablets)"
+                />
+              </label>
+
+              <label for="specialFeatures">
+                <i class="fa-solid fa-wand-sparkles"></i>
+                <input
+                  type="text"
+                  name="specialFeatures"
+                  id="specialFeatures"
+                  placeholder="Enter special features (e.g., LED power indicator, built-in cables)"
+                />
+              </label>
+              <label for="pwarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="pwarranty"
+                  id="pwarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <div class="earbudSpecs" style="display: none">
+              <h2>Enter earbud specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="bluetoothVersion">
+                <i class="fa-brands fa-bluetooth"></i>
+                <input
+                  type="text"
+                  name="bluetoothVersion"
+                  id="bluetoothVersion"
+                  placeholder="Enter bluetooth version (e.g., Bluetooth 5.3)"
+                />
+              </label>
+
+              <label for="batteryLife">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="batteryLife"
+                  id="batteryLife"
+                  placeholder="Enter battery life (e.g., 8hrs (earbuds), 30hrs (with case)
+                  )"
+                />
+              </label>
+
+              <label for="chargingTime">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="chargingTime"
+                  id="chargingTime"
+                  placeholder="Enter charging time (e.g., 1hr (earbuds), 2hrs (case))"
+                />
+              </label>
+
+              <label for="driverSize">
+                <i class="fa-solid fa-hard-drive"></i>
+                <input
+                  type="text"
+                  name="driverSize"
+                  id="driverSize"
+                  placeholder="Enter driver size (e.g., 12mm dynamic drivers)"
+                />
+              </label>
+
+              <label for="microphone">
+                <i class="fa-solid fa-microphone"></i>
+                <input
+                  type="text"
+                  name="microphone"
+                  id="microphone"
+                  placeholder="Enter microphone (e.g., ENC (Environmental Noise Cancellation))"
+                />
+              </label>
+
+              <label for="noiseCancellation">
+                <i class="fa-solid fa-ban"></i>
+                <input
+                  type="text"
+                  name="noiseCancellation"
+                  id="noiseCancellation"
+                  placeholder="Enter noiseCancellation info (e.g., Hybrid ANC)"
+                />
+              </label>
+
+              <label for="touchControls">
+                <i class="fa-solid fa-fingerprint"></i>
+                <input
+                  type="text"
+                  name="touchControls"
+                  id="touchControls"
+                  placeholder="Enter touch controls (e.g., Customizable taps for playback/calls
+                  )"
+                />
+              </label>
+
+              <label for="eiprating">
+                <i class="fa-solid fa-water"></i>
+                <input
+                  type="text"
+                  name="eiprating"
+                  id="eiprating"
+                  placeholder="Enter ip rating (e.g.,  IPX5 (Splash-resistant)
+                  )"
+                />
+              </label>
+
+              <label for="ecompatibility">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="ecompatibility"
+                  id="ecompatibility"
+                  placeholder="Enter compatibility (e.g., iOS, Android, Windows)"
+                />
+              </label>
+
+              <label for="especialFeatures">
+                <i class="fa-solid fa-wand-sparkles"></i>
+                <input
+                  type="text"
+                  name="especialFeatures"
+                  id="especialFeatures"
+                  placeholder="Enter special features (e.g., Multipoint connectivity, gaming mode)"
+                />
+              </label>
+              <label for="ewarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="ewarranty"
+                  id="ewarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <div class="watchSpecs" style="display: none">
+              <h2>Enter smart watch specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="wdisplay">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="wdisplay"
+                  id="wdisplay"
+                  placeholder="Enter display (e.g.,  AMOLED, 1.78 inches
+                  )"
+                />
+              </label>
+
+              <label for="resolution">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <input
+                  type="text"
+                  name="resolution"
+                  id="resolution"
+                  placeholder="Enter resolution (e.g., 448x368 pixels
+                  )"
+                />
+              </label>
+              <label for="wbatterylife">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="wbatterylife"
+                  id="wbatterylife"
+                  placeholder="Enter battery life (e.g., 7 days (typical use)
+                  )"
+                />
+              </label>
+
+              <label for="wos">
+                <i class="fa-solid fa-gear"></i>
+                <input
+                  type="text"
+                  name="wos"
+                  id="wos"
+                  placeholder="Enter os (e.g., Wear OS 3)"
+                />
+              </label>
+
+              <label for="wconnectivity">
+                <i class="fa-solid fa-wifi"></i>
+                <input
+                  type="text"
+                  name="wconnectivity"
+                  id="wconnectivity"
+                  placeholder="Enter connectivity (e.g., Bluetooth 5.2, GPS, NFC)"
+                />
+              </label>
+
+              <label for="sensors">
+                <i class="fa-solid fa-syringe"></i>
+                <input
+                  type="text"
+                  name="sensors"
+                  id="sensors"
+                  placeholder="Enter sensors (e.g., Heart rate, SpO2, accelerometer
+                  )"
+                />
+              </label>
+
+              <label for="waterResistance">
+                <i class="fa-solid fa-water"></i>
+                <input
+                  type="text"
+                  name="waterResistance"
+                  id="waterResistance"
+                  placeholder="Enter water resistance info (e.g., 5ATM (Swim-proof)
+                  )"
+                />
+              </label>
+
+              <label for="wcompatibility">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="wcompatibility"
+                  id="wcompatibility"
+                  placeholder="Enter compatibility (e.g., Android 8.0+, iOS 14+
+                  )"
+                />
+              </label>
+
+              <label for="healthFeatures">
+                <i class="fa-solid fa-notes-medical"></i>
+                <input
+                  type="text"
+                  name="healthFeatures"
+                  id="healthFeatures"
+                  placeholder="Enter health features (e.g.,  Sleep tracking, stress monitoring
+                  )"
+                />
+              </label>
+
+              <label for="wspecialfeatures">
+                <i class="fa-solid fa-wand-sparkles"></i>
+                <input
+                  type="text"
+                  name="wspecialfeatures"
+                  id="wspecialfeatures"
+                  placeholder="Enter special features (e.g.,  LTE support, voice assistant
+                  )"
+                />
+              </label>
+              <label for="wwarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="wwarranty"
+                  id="wwarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <div class="speakerSpecs" style="display: none">
+              <h2>Enter speaker specifications accordingly:</h2>
+              <!-- Additional Specs Inputs -->
+
+              <label for="smodel">
+                <i class="fa-solid fa-mobile"></i>
+                <input
+                  type="text"
+                  name="smodel"
+                  id="smodel"
+                  placeholder="Enter model (e.g., JBL T500BT)"
+                />
+              </label>
+
+              <label for="speakerType">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <input
+                  type="text"
+                  name="speakerType"
+                  id="speakerType"
+                  placeholder="Enter speaker type (e.g., Bluetooth speaker, portable speaker, home speaker)"
+                />
+              </label>
+              <label for="soutputPower">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="soutputPower"
+                  id="soutputPower"
+                  placeholder="Enter output power (e.g., 10W)"
+                />
+              </label>
+
+              <label for="sconnectivity">
+                <i class="fa-solid fa-gear"></i>
+                <input
+                  type="text"
+                  name="sconnectivity"
+                  id="sconnectivity"
+                  placeholder="Enter connectivity (e.g., Bluetooth 5.2, GPS, NFC)"
+                />
+              </label>
+
+              <label for="sbluetoothRange">
+                <i class="fa-solid fa-wifi"></i>
+                <input
+                  type="text"
+                  name="sbluetoothRange"
+                  id="sbluetoothRange"
+                  placeholder="Enter bluetooth range (e.g., 10m)"
+                />
+              </label>
+
+              <label for="sbatteryLife">
+                <i class="fa-solid fa-battery-full"></i>
+                <input
+                  type="text"
+                  name="sbatteryLife"
+                  id="sbatteryLife"
+                  placeholder="Enter battery life (e.g., 10 hours)"
+                />
+              </label>
+
+              <label for="splaybackTime">
+                <i class="fa-solid fa-play"></i>
+                <input
+                  type="text"
+                  name="splaybackTime"
+                  id="splaybackTime"
+                  placeholder="Enter playback time (e.g., 10 hours)"
+                />
+              </label>
+
+              <label for="schargingTime">
+                <i class="fa-solid fa-bolt"></i>
+                <input
+                  type="text"
+                  name="schargingTime"
+                  id="schargingTime"
+                  placeholder="Enter charging time (e.g., 2 hours)"
+                />
+              </label>
+
+              <label for="swaterResistance">
+                <i class="fa-solid fa-water"></i>
+                <input
+                  type="text"
+                  name="swaterResistance"
+                  id="swaterResistance"
+                  placeholder="Enter water resistance (e.g., IPX7)"
+                />
+              </label>
+
+              <label for="sfrequencyResponse">
+                <i class="fa-solid fa-wand-sparkles"></i>
+                <input
+                  type="text"
+                  name="sfrequencyResponse"
+                  id="sfrequencyResponse"
+                  placeholder="Enter frequency response (e.g., 20Hz-20kHz)"
+                />
+              </label>
+              <label for="sdimensions">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="sdimensions"
+                  id="sdimensions"
+                  placeholder="Enter dimensions (e.g., 10x10x10cm)"
+                />
+              </label>
+              <label for="sweight">
+                <i class="fa-solid fa-weight"></i>
+                <input
+                  type="text"
+                  name="sweight"
+                  id="sweight"
+                  placeholder="Enter weight (e.g., 100g)"
+                />
+              </label>
+              <label for="spackageIncludes">
+                <i class="fa-solid fa-box"></i>
+                <input
+                  type="text"
+                  name="spackageIncludes"
+                  id="spackageIncludes"
+                  placeholder="Enter package includes (e.g., Speaker, USB cable, user manual)"
+                />
+              </label>
+              <label for="swarranty">
+                <i class="fa-solid fa-shield"></i>
+                <input
+                  type="text"
+                  name="swarranty"
+                  id="swarranty"
+                  placeholder="Enter warranty (e.g., 1 year)"
+                />
+              </label>
+            </div>
+            <label class="upload-section" onclick="showUpload()">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              Click here to upload product images
+            </label>
+            <div class="upload-container">
+              <div class="upload-item images" id="image1">+</div>
+              <div class="upload-item images" id="image2">+</div>
+              <div class="upload-item images" id="image3">+</div>
+              <div class="upload-item images" id="image4">+</div>
+              <div class="upload-item images" id="image5">+</div>
+              <div class="upload-item images" id="image6">+</div>
+              <div class="upload-item images" id="image7">+</div>
+              <div class="upload-item images" id="image8">+</div>
+              <div class="upload-item images" id="image9">+</div>
+              <div class="upload-item images" id="image10">+</div>
+            </div>
+            <input
+              type="file"
+              id="images1"
+              name="image1"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images2"
+              name="image2"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images3"
+              name="image3"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images4"
+              name="image4"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images5"
+              name="image5"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images6"
+              name="image6"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images7"
+              name="image7"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images8"
+              name="image8"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images9"
+              name="image9"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <input
+              type="file"
+              id="images10"
+              name="image10"
+              accept="image/*"
+              class="image-input"
+              style="display: none"
+            />
+            <!-- Video Upload Section -->
+            <label class="upload-section" onclick="showVideoUpload()">
+              <i class="fa-solid fa-video"></i>
+              Click here to upload product video
+            </label>
+            <div class="video-upload-container">
+              <div class="upload-item video" id="video1">+</div>
+            </div>
+            <input
+              type="file"
+              id="video1"
+              name="video"
+              accept="video/*"
+              class="video-input"
+              style="display: none"
+            />
+            <input type="submit" value="Submit" />
+          </form>
+          <div
+            class="manage-category hide form-style menu-content manage-section"
+            data-heading="Manage Category"
+          >
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Category Name</th>
+                  <th>Action Button</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-subcategory hide form-style menu-content manage-section"
+            data-heading="Manage Sub-Category"
+          >
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Sub-Category Name</th>
+                  <th>Parent Category</th>
+                  <th>Action Button</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-product hide form-style menu-content manage-section"
+            data-heading="Manage product"
+          >
+            <label
+              for="search-bar"
+              style="
+                position: sticky;
+                top: 0px;
+                z-index: 100;
+                background-color: var(--black--);
+              "
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                name="search"
+                id="search-bar"
+                placeholder="Search product"
+              />
+            </label>
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Added Date</th>
+                  <th>Product Name</th>
+                  <th>Cost Price</th>
+                  <th>Selling Price</th>
+                  <th>Parent Category</th>
+                  <th>Parent Subcategory</th>
+                  <th>Color</th>
+                  <th>Action Button</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-orders hide form-style menu-content manage-section"
+            data-heading="Manage orders"
+          >
+            <label for="orders-search-bar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                name="search"
+                id="orders-search-bar"
+                placeholder="Search order"
+              />
+            </label>
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Order Date</th>
+                  <th>Order Id</th>
+                  <th>Customer Name</th>
+                  <th>Products</th>
+                  <th>Quantity</th>
+                  <th>Color</th>
+                  <th>Variant</th>
+                  <th>Phone model (For Cover)</th>
+                  <th>Shipping Address</th>
+                  <th>Contact info</th>
+                  <th>Customer Note</th>
+                  <!-- <th>Payment Method</th>
+                  <th>Payment Status</th> -->
+                  <th>Status</th>
+                  <th>Action Button</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-shipped-orders hide form-style menu-content manage-section"
+            data-heading="Shipped Orders"
+          >
+            <label for="shipped-orders-search-bar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                name="search"
+                id="shipped-orders-search-bar"
+                placeholder="Search order"
+              />
+            </label>
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Order Data</th>
+                  <th>Order Id</th>
+                  <th>Checkout Id</th>
+                  <th>Customer Name</th>
+                  <th>Products</th>
+                  <th>Quantity</th>
+                  <th>Shipping Address</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-delivered-orders hide form-style menu-content manage-section"
+            data-heading="Delivered Orders"
+          >
+            <label for="delivered-orders-search-bar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                name="search"
+                id="delivered-orders-search-bar"
+                placeholder="Search order"
+              />
+            </label>
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Order Data</th>
+                  <th>Order Id</th>
+                  <th>Checkout Id</th>
+                  <th>Customer Name</th>
+                  <th>Products</th>
+                  <th>Quantity</th>
+                  <th>Shipping Address</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div
+            class="manage-cancelled-orders hide form-style menu-content manage-section"
+            data-heading="Cancelled Orders"
+          >
+            <label for="cancelled-orders-search-bar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                name="search"
+                id="cancelled-orders-search-bar"
+                placeholder="Search order"
+              />
+            </label>
+            <table cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Order Data</th>
+                  <th>Order Id</th>
+                  <th>Checkout Id</th>
+                  <th>Customer Name</th>
+                  <th>Products</th>
+                  <th>Quantity</th>
+                  <th>Shipping Address</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+        <footer>
+          <h2>© 2025 Online Clothing Application. All Rights Reserved..</h2>
+        </footer>
+        <p class="delete-loader"></p>
+      </aside>
+    </main>
+  </body>
+  <script>
+    // Set default month and year
+    window.onload = function () {
+      const now = new Date();
+      document.getElementById("monthSelect").value = now.getMonth();
+      document.getElementById("yearInput").value = now.getFullYear();
+    };
+
+    function showError(message) {
+      const errorDiv = document.getElementById("errorMessage");
+      errorDiv.textContent = message;
+      errorDiv.style.display = "block";
+      setTimeout(() => {
+        errorDiv.style.display = "none";
+      }, 5000);
+    }
+
+    function formatTime(dateString) {
+      if (!dateString) return "-";
+      return new Date(dateString).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    function formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+
+    function getShiftTiming(shift) {
+      if (!shift || !shift.timeIn) return "-";
+      return `${formatTime(shift.timeIn)} - ${
+        shift.timeOut ? formatTime(shift.timeOut) : "In Progress"
+      }`;
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="script.js"></script>
+  <script
+    src="https://kit.fontawesome.com/6a696bf81d.js"
+    crossorigin="anonymous"
+  ></script>
+</html>

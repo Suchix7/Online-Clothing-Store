@@ -1,0 +1,135 @@
+{
+  "New South Wales": {
+    "Sydney Metro": [
+      "Sydney CBD",
+      "Bondi Beach",
+      "Parramatta",
+      "Chatswood",
+      "Liverpool",
+      "Newtown",
+      "Manly",
+      "Bankstown"
+    ],
+    "Newcastle Area": [
+      "Newcastle CBD",
+      "Hamilton",
+      "Merewether",
+      "Kotara",
+      "Wallsend"
+    ],
+    "Wollongong Area": [
+      "Wollongong CBD",
+      "Fairy Meadow",
+      "Corrimal",
+      "Figtree",
+      "Warrawong"
+    ]
+  },
+  "Victoria": {
+    "Melbourne Metro": [
+      "Melbourne CBD",
+      "Southbank",
+      "Docklands",
+      "St Kilda",
+      "Richmond",
+      "Fitzroy",
+      "Brunswick",
+      "Dandenong"
+    ],
+    "Geelong Area": [
+      "Geelong CBD",
+      "Newtown",
+      "Belmont",
+      "Highton",
+      "Norlane",
+      "Corio"
+    ],
+    "Ballarat Area": [
+      "Ballarat Central",
+      "Bakery Hill",
+      "Soldiers Hill",
+      "Eureka",
+      "Mount Helen"
+    ]
+  },
+  "Queensland": {
+    "Brisbane Metro": [
+      "Brisbane CBD",
+      "South Brisbane",
+      "Fortitude Valley",
+      "West End",
+      "Kangaroo Point",
+      "New Farm"
+    ],
+    "Gold Coast Area": [
+      "Surfers Paradise",
+      "Southport",
+      "Broadbeach",
+      "Burleigh Heads",
+      "Robina"
+    ],
+    "Cairns Area": [
+      "Cairns City",
+      "Edge Hill",
+      "Earlville",
+      "Manoora",
+      "Redlynch"
+    ]
+  },
+  "Western Australia": {
+    "Perth Metro": [
+      "Perth CBD",
+      "East Perth",
+      "West Perth",
+      "Northbridge",
+      "Subiaco",
+      "Joondalup",
+      "Mandurah"
+    ],
+    "Fremantle Area": [
+      "Fremantle",
+      "South Fremantle",
+      "Beaconsfield",
+      "Hilton",
+      "White Gum Valley"
+    ]
+  },
+  "South Australia": {
+    "Adelaide Metro": [
+      "Adelaide CBD",
+      "North Adelaide",
+      "Glenelg",
+      "Norwood",
+      "Port Adelaide"
+    ],
+    "Regional SA": ["Mount Gambier", "Whyalla", "Port Lincoln"]
+  },
+  "Tasmania": {
+    "Hobart Metro": [
+      "Hobart CBD",
+      "Battery Point",
+      "North Hobart",
+      "Sandy Bay"
+    ],
+    "Launceston Area": ["Launceston", "Invermay", "Newstead"]
+  },
+  "Australian Capital Territory": {
+    "Canberra Metro": [
+      "Canberra CBD",
+      "Belconnen",
+      "Gungahlin",
+      "Woden Valley",
+      "Tuggeranong"
+    ]
+  },
+  "Northern Territory": {
+    "Darwin Metro": [
+      "Darwin City",
+      "Casuarina",
+      "Palmerston",
+      "Nightcliff",
+      "Parap"
+    ],
+    "Alice Springs Area": ["Alice Springs", "Sadadeen", "The Gap"]
+  }
+}

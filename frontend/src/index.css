@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: false;
+}
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/futura.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.futura-font {
+  font-family: "Futura", sans-serif;
+}
+.futura-font-bold {
+  font-family: "Futura", sans-serif;
+  font-weight: boldcd;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Futura", "Arial", sans-serif;
+}
+p {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+.monstserrat-font {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+:root {
+  --primary: #000000;
+  --secondary: #ffffff;
+}
+
+.clamp-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}

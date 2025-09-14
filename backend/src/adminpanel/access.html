@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Portal</title>
+    <style>
+      body {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        color: white;
+        box-sizing: border-box;
+      }
+
+      form {
+        border: 1px solid white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      input {
+        padding: 8px;
+        border: 1px solid white;
+        color: white;
+        background-color: transparent;
+      }
+
+      input[type="submit"] {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        transition: all 0.5s;
+      }
+
+      input[type="submit"]:hover {
+        background-color: black;
+        color: white;
+      }
+
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form method="POST" action="/login">
+      <h2>Enter passcode to continue</h2>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Enter Passcode"
+      />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

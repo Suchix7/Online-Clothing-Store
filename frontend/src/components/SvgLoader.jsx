@@ -1,0 +1,163 @@
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+const SvgLoader = ({ forCheckout }) => {
+  const [key, setKey] = useState(0);
+
+  // Reset animation every 7 seconds to create a loop
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setKey((prevKey) => prevKey + 1);
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        when: "afterChildren",
+        staggerChildren: 0.1,
+        staggerDirection: -1,
+      },
+    },
+  };
+
+  const outlineVariants = {
+    hidden: { pathLength: 0 },
+    visible: {
+      pathLength: 1,
+      transition: {
+        duration: 2,
+        ease: "linear",
+      },
+    },
+    exit: { opacity: 0 },
+  };
+
+  const pathVariants = {
+    hidden: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
+    visible: {
+      pathLength: 1,
+      fill: "rgba(255, 255, 255, 1)",
+      transition: {
+        pathLength: { duration: 1.5, ease: "linear" },
+        fill: { delay: 1, duration: 0.5 },
+      },
+    },
+    exit: { opacity: 0 },
+  };
+
+  const dotVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.5 },
+    },
+    exit: { opacity: 0 },
+  };
+
+  const spinVariants = {
+    visible: {
+      rotate: 360,
+      transition: {
+        rotate: {
+          delay: 2,
+          duration: 4,
+          repeat: Infinity,
+          ease: "linear",
+        },
+      },
+    },
+  };
+
+  return (
+    <div
+      className={`relative flex items-center justify-center ${
+        forCheckout ? "w-[28px] h-[28px]" : "w-[100px] h-[100px]"
+      }`}
+    >
+      <motion.svg
+        key={key}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={containerVariants}
+        className="w-full h-full"
+        viewBox="0 0 448.28 455.06"
+      >
+        <motion.g variants={spinVariants}>
+          {/* Outline */}
+          <motion.ellipse
+            className="stroke-[#000] fill-none stroke-[20px]"
+            cx="224.14"
+            cy="227.53"
+            rx="214.14"
+            ry="217.53"
+            variants={outlineVariants}
+          />
+
+          {/* Inner paths */}
+          <motion.g variants={containerVariants}>
+            <motion.path
+              className="stroke-[#000]  stroke-[10px]"
+              d="m225.86,455.06c-37.64,0-72.63-24.05-98.52-67.72-24.92-42.03-38.64-97.7-38.64-156.75s13.72-114.72,38.64-156.75C153.24,30.18,188.22,6.13,225.86,6.13s72.63,24.05,98.52,67.72c24.92,42.03,38.64,97.7,38.64,156.75s-13.72,114.72-38.64,156.75c-25.89,43.67-60.88,67.72-98.52,67.72Zm0-428.94c-30.29,0-59.17,20.57-81.31,57.92-23.12,38.99-35.85,91.03-35.85,146.55s12.73,107.57,35.85,146.55c22.14,37.35,51.02,57.92,81.31,57.92s59.17-20.57,81.31-57.92c23.12-38.99,35.85-91.03,35.85-146.55s-12.73-107.56-35.85-146.55c-22.14-37.35-51.02-57.92-81.31-57.92Z"
+              variants={pathVariants}
+            />
+            <motion.path
+              className="stroke-[#000]  stroke-[10px]"
+              d="m323.34,364.56c-43.58,0-93.99-11.34-143.35-32.37-53.57-22.83-99.77-54.48-130.08-89.12-32.01-36.58-42.86-72.62-30.55-101.51,12.31-28.88,45.83-46.02,94.38-48.26,45.98-2.12,100.8,9.29,154.37,32.12h0c53.57,22.83,99.77,54.48,130.08,89.12,32.01,36.58,42.86,72.62,30.55,101.51-12.31,28.88-45.83,46.02-94.38,48.26-3.62.17-7.3.25-11.03.25ZM124.13,113.13c-43.35,0-76.1,12.19-86.37,36.27-19.63,46.06,49.09,121.34,150.07,164.38,100.98,43.04,202.88,40.49,222.51-5.58,19.63-46.07-49.09-121.34-150.07-164.38-48.19-20.54-96.58-30.69-136.15-30.69Z"
+              variants={pathVariants}
+            />
+            <motion.path
+              className="stroke-[#000]  stroke-[10px]"
+              d="m83.41,385.41c-12.27,0-21.62-3.57-27.77-10.73-13.8-16.07-7.3-45.34,18.79-84.66,23.52-35.43,60.51-75.6,104.17-113.1,43.66-37.5,88.94-68.01,127.52-85.91,42.8-19.86,72.72-21.87,86.52-5.8,13.8,16.07,7.3,45.34-18.79,84.65-23.51,35.43-60.51,75.6-104.17,113.1s-88.95,68.01-127.52,85.91c-23.72,11.01-43.49,16.53-58.75,16.53ZM364.79,94.37c-10.39,0-26.82,3.91-50.25,14.78-36.95,17.15-80.6,46.6-122.91,82.94h0c-42.3,36.34-78.01,75.04-100.54,108.99-23.26,35.05-25.46,54.53-20.28,60.56,5.18,6.03,24.77,6.8,62.93-10.91,36.95-17.15,80.6-46.6,122.91-82.94s78.01-75.04,100.53-108.99c23.26-35.05,25.46-54.53,20.28-60.56-2-2.33-6.15-3.87-12.68-3.87Z"
+              variants={pathVariants}
+            />
+          </motion.g>
+
+          {/* Dots */}
+          <motion.circle
+            className="stroke-[#000]  stroke-[20px]"
+            cx="397.43"
+            cy="231.62"
+            r="11.33"
+            variants={dotVariants}
+          />
+          <motion.circle
+            className="stroke-[#000] stroke-[20px]"
+            cx="269"
+            cy="350.34"
+            r="11.33"
+            variants={dotVariants}
+          />
+          <motion.circle
+            className="stroke-[#000] stroke-[20px]"
+            cx="193.27"
+            cy="175.65"
+            r="11.33"
+            variants={dotVariants}
+          />
+          <motion.circle
+            className="stroke-[#000]  stroke-[20px]"
+            cx="101.8"
+            cy="177.12"
+            r="11.33"
+            variants={dotVariants}
+          />
+        </motion.g>
+      </motion.svg>
+    </div>
+  );
+};
+
+export default SvgLoader;

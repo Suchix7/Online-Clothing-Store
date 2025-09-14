@@ -1,0 +1,63 @@
+[
+  {
+    "mappingType": "equivalent",
+    "source": "cover",
+    "synonyms": ["case", "back cover", "flip cover", "flip case"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "case",
+    "synonyms": ["cover", "back cover", "flip cover", "flip case"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "screen protector",
+    "synonyms": ["tempered glass", "glass protector", "tempered"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "tempered glass",
+    "synonyms": ["screen protector", "glass protector"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "earbuds",
+    "synonyms": ["ear phones", "earphones", "pods", "buds"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "earphones",
+    "synonyms": ["ear phones", "earbuds", "pods", "buds"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "headphones",
+    "synonyms": ["headset", "head phones"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "charger",
+    "synonyms": ["charging adapter", "power adapter", "wall charger"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "cable",
+    "synonyms": ["charging cable", "usb cable", "data cable"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "powerbank",
+    "synonyms": ["power bank", "portable charger"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "smartwatch",
+    "synonyms": ["smart watch", "watch"]
+  },
+  {
+    "mappingType": "equivalent",
+    "source": "iphone",
+    "synonyms": ["apple iphone"]
+  },
+  { "mappingType": "equivalent", "source": "samsung", "synonyms": ["galaxy"] }
+]
