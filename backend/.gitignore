@@ -1,3 +1,4 @@
 node_modules
 # Ignore sensitive credentials
 src/lib/credentials.json
+
