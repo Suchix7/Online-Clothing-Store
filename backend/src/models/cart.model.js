@@ -24,6 +24,10 @@ const cartSchema = new mongoose.Schema(
         image: {
           type: String,
         },
+        size: {
+          type: String,
+          default: "No size chosen",
+        },
         color: {
           type: String,
           default: "No color chosen",

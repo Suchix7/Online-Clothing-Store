@@ -75,6 +75,7 @@ function ProductCard({
           quantity: quantity,
           image: image,
           stock: stock,
+          size: "No size chosen",
           color: "No color chosen",
           variant: "No variant chosen",
           model: "No model chosen",

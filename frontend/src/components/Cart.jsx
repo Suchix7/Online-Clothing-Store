@@ -113,7 +113,7 @@ const Cart = () => {
       .replace(/[^a-zA-Z0-9-_]/g, "_");
 
   const handleQuantityChange = async (item, action) => {
-    const { productId, color, variant, model, quantity } = item;
+    const { productId, color, variant, model, quantity, size } = item;
     const availableStock = productStocks[productId] || 0;
 
     if (authUser) {
@@ -133,7 +133,8 @@ const Cart = () => {
             cartItem.productId === productId &&
             cartItem.color === color &&
             cartItem.variant === variant &&
-            cartItem.model === model
+            cartItem.model === model &&
+            cartItem.size === size
           ) {
             const newQuantity =
               action === "increase"
@@ -156,6 +157,7 @@ const Cart = () => {
           color,
           variant,
           model,
+          size,
         });
 
         toast.success(
@@ -198,7 +200,7 @@ const Cart = () => {
     }
   };
 
-  const handleRemoveItem = async (productId, color, variant, model) => {
+  const handleRemoveItem = async (productId, color, variant, model, size) => {
     setIsLoading(true);
     if (authUser) {
       try {
@@ -208,13 +210,14 @@ const Cart = () => {
               String(item.productId) == String(productId) &&
               item.color == color &&
               item.variant == variant &&
-              item.model == model
+              item.model == model &&
+              item.size == size
             )
         );
         updateCart(filteredItems);
         const response = await axiosInstance.delete(
           `/cart/remove/product/${productId}/${authUser._id}`,
-          { data: { color, variant, model } }
+          { data: { color, variant, model, size } }
         );
         toast.success("Item removed from cart");
         loadCart();
@@ -316,7 +319,8 @@ const Cart = () => {
                       item.productId,
                       item.color,
                       item.variant,
-                      item.model
+                      item.model,
+                      item.size
                     )
                   }
                   className="text-gray-400 hover:text-red-500 ml-2"
@@ -383,8 +387,7 @@ const Cart = () => {
               <th className="py-3 px-4">Price</th>
               <th className="py-3 px-4">Quantity</th>
               <th className="py-3 px-4">Color</th>
-              <th className="py-3 px-4">Variant</th>
-              <th className="py-3 px-4">Model</th>
+              <th className="py-3 px-4">Size</th>
               <th className="py-3 px-4">Total</th>
               <th className="py-3 px-4 text-center">Remove</th>
             </tr>
@@ -461,11 +464,9 @@ const Cart = () => {
                     {item.color || "No color chosen"}
                   </td>
                   <td className="py-3 px-4 text-gray-700">
-                    {item.variant || "No variant chosen"}
+                    {item.size || "No variant chosen"}
                   </td>
-                  <td className="py-3 px-4 text-gray-700">
-                    {item.model || "No model chosen"}
-                  </td>
+
                   <td className="py-3 px-4 text-gray-700">
                     $ {(item.price * item.quantity).toFixed(2)}
                   </td>
@@ -476,7 +477,8 @@ const Cart = () => {
                           item.productId,
                           item.color,
                           item.variant,
-                          item.model
+                          item.model,
+                          item.size
                         )
                       }
                       className="text-red-500 hover:text-red-700 transition-colors"

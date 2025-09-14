@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, act } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 // Shared cache for scroll position and products (module-level, sync with Products.jsx)
 let cachedScrollY = 0;
@@ -214,7 +214,7 @@ const ProductDetails = () => {
   const [selectedPack, setSelectedPack] = useState("1x");
   const [selectedModel, setSelectedModel] = useState(null);
   const [direction, setDirection] = useState(0);
-
+  const [activeSize, setActiveSize] = useState(null);
   const SWIPE_OFFSET_TRIGGER = 80; // px the user must drag before we flip
   const SWIPE_VELOCITY_TRIGGER = 600; // px/s fling speed
 
@@ -336,7 +336,10 @@ const ProductDetails = () => {
     if (product.model?.length > 0 && (!model || model === "No model chosen")) {
       errors.push("model");
     }
-
+    //Size Selection
+    if (product.size?.length > 0 && !activeSize) {
+      errors.push("size");
+    }
     // Variant selection
     if (
       product.variant?.length > 0 &&
@@ -574,6 +577,9 @@ const ProductDetails = () => {
       }
     }
   };
+  function handleSize(sizeName) {
+    setActiveSize((prev) => (prev === sizeName ? null : sizeName));
+  }
 
   const handleColor = (image, colorName) => {
     if (activeColor === colorName && color === image) {
@@ -714,6 +720,7 @@ const ProductDetails = () => {
           stock: product.stock,
           color: activeColor,
           variant: activeStorage,
+          size: activeSize,
           model: model,
         });
         toast.success(response.data.message);
@@ -740,6 +747,7 @@ const ProductDetails = () => {
           activeColor !== "No color chosen" ? color : product.images[0]?.url,
         stock: product.stock,
         color: activeColor,
+        size: activeSize,
         variant: activeStorage,
         model: model,
       };
@@ -752,7 +760,8 @@ const ProductDetails = () => {
           item.modelName === updatedCartItem.modelName &&
           item.variant === updatedCartItem.variant &&
           item.color === updatedCartItem.color &&
-          item.model === updatedCartItem.model
+          item.model === updatedCartItem.model &&
+          item.size === updatedCartItem.size
       );
 
       if (existingItemIndex !== -1) {
@@ -811,6 +820,7 @@ const ProductDetails = () => {
       stock: product.stock,
       color: activeColor,
       variant: activeStorage,
+      size: activeSize,
       model: model,
     };
 
@@ -1414,11 +1424,11 @@ const ProductDetails = () => {
                   {/* Price Section */}
                   <div className="space-y-2">
                     <p className="text-2xl font-bold text-black">
-                      $ {calculatedPrice}
+                      Rs. {calculatedPrice}
                     </p>
                     {/* {product.parentCategory === "Screen Protector" && (
                     <p className="text-sm text-gray-500">
-                      Unit Price: $ {basePrice}
+                      Unit Price: Rs. {basePrice}
                     </p>
                   )} */}
 
@@ -1518,6 +1528,35 @@ const ProductDetails = () => {
                             >
                               {item}
                             </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {/* Compact Size Selector */}
+                  {product.size?.length > 0 && (
+                    <div className="py-4">
+                      <div className="mb-4">
+                        <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wider mb-2">
+                          Size
+                        </h3>
+                        <div className="flex flex-wrap gap-1.5">
+                          {product.size.map((s) => (
+                            <button
+                              key={s.sizeName}
+                              onClick={() => {
+                                handleSize(s.sizeName.toLowerCase());
+                              }}
+                              className={`px-3 py-1.5 text-sm border rounded-md cursor-pointer transition-colors
+              ${
+                activeSize === s.sizeName.toLowerCase()
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-gray-900 border-gray-300 hover:border-gray-400"
+              }
+            `}
+                            >
+                              {s.sizeName}
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -2627,7 +2666,7 @@ const SimilarProducts = ({
                   {/* Price & Stock */}
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-semibold text-gray-900">
-                      ${product.currentPrice}
+                      Rs.{product.currentPrice}
                     </span>
                     {product.inStock && (
                       <span className="text-xs text-gray-600">

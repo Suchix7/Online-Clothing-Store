@@ -13,7 +13,9 @@ export const addToCart = async (req, res) => {
     color,
     variant,
     model,
+    size,
     status,
+    cart,
     modelName,
   } = req.body;
 
@@ -35,6 +37,7 @@ export const addToCart = async (req, res) => {
           item.productId.toString() === productId &&
           item.color === color &&
           item.variant === variant &&
+          item.size === size &&
           item.model === model &&
           item.modelName === modelName
       );
@@ -54,6 +57,7 @@ export const addToCart = async (req, res) => {
           color,
           variant,
           model: model,
+          size,
           modelName,
         });
       }
@@ -65,7 +69,7 @@ export const addToCart = async (req, res) => {
           productId,
           type: "cart",
           weight: 5,
-          meta: { quantity, color, variant, model, source: "addToCart" },
+          meta: { quantity, color, variant, model, size, source: "addToCart" },
         });
       })();
       console.log("After", updatedCart);
@@ -91,6 +95,7 @@ export const addToCart = async (req, res) => {
           color,
           variant,
           model: model,
+          size,
           modelName,
         },
       ],
@@ -104,7 +109,14 @@ export const addToCart = async (req, res) => {
         productId,
         type: "cart",
         weight: 5,
-        meta: { quantity, color, variant, model, source: "addToCart:newCart" },
+        meta: {
+          quantity,
+          color,
+          variant,
+          model,
+          size,
+          source: "addToCart:newCart",
+        },
       });
     })();
     return res.status(201).json({
@@ -122,7 +134,7 @@ export const addToCart = async (req, res) => {
 
 export const deleteProductFromCart = async (req, res) => {
   const { productId, userId } = req.params;
-  const { color, variant, model } = req.body;
+  const { color, variant, model, size } = req.body;
 
   try {
     const userObjectId = new mongoose.Types.ObjectId(userId);
@@ -138,7 +150,8 @@ export const deleteProductFromCart = async (req, res) => {
           String(product.productId) === String(productId) &&
           product.color?.toLowerCase() === color?.toLowerCase() &&
           product.variant?.toLowerCase() === variant?.toLowerCase() &&
-          product.model?.toLowerCase() === model?.toLowerCase()
+          product.model?.toLowerCase() === model?.toLowerCase() &&
+          product.size?.toLowerCase() === size?.toLowerCase()
         )
     );
 
@@ -167,7 +180,7 @@ export const deleteProductFromCart = async (req, res) => {
 
 export const cartIncrement = async (req, res) => {
   const { productId, userId } = req.params;
-  const { color, model, variant } = req.body;
+  const { color, model, size, variant } = req.body;
   try {
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const cart = await Cart.findOne({ userId: userObjectId });
@@ -184,7 +197,8 @@ export const cartIncrement = async (req, res) => {
         product.productId.equals(productObjectId) &&
         product.color === color &&
         product.model === model &&
-        product.variant === variant
+        product.variant === variant &&
+        product.size === size
     );
 
     if (productIndex === -1) {
@@ -221,7 +235,7 @@ export const cartIncrement = async (req, res) => {
 
 export const cartDecrement = async (req, res) => {
   const { productId, userId } = req.params;
-  const { color, model, variant } = req.body;
+  const { color, model, size, variant } = req.body;
   try {
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const cart = await Cart.findOne({ userId: userObjectId });
@@ -237,7 +251,8 @@ export const cartDecrement = async (req, res) => {
         product.productId.equals(productObjectId) &&
         product.color === color &&
         product.model === model &&
-        product.variant === variant
+        product.variant === variant &&
+        product.size === size
     );
 
     if (productIndex === -1) {
@@ -345,6 +360,7 @@ export const syncCart = async (req, res) => {
                 color: item.color,
                 variant: item.variant,
                 model: item.model,
+                size: item.size,
                 source: "syncCart",
               },
             });

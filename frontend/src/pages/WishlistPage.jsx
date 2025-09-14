@@ -118,6 +118,7 @@ const WishlistPage = () => {
           quantity: 1,
           image: product.images[0]?.url,
           stock: product.stock,
+          size: "No size chosen",
           color: "No color chosen",
           variant: "No variant chosen",
           model: "No model chosen",
