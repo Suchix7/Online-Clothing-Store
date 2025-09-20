@@ -2,3 +2,5 @@ node_modules
 # Ignore sensitive credentials
 src/lib/credentials.json
 .env
+*.env
+backend/.env
