@@ -234,7 +234,7 @@ function TopBrandsPage() {
                       }}
                       className="flex flex-col h-full"
                     >
-                      <div className="relative w-full pt-[100%] bg-gradient-to-br from-pink-500 to-purple-600">
+                      <div className="relative w-full pt-[100%] bg-gray-100">
                         <div className="absolute inset-0 p-2 sm:p-6 flex items-center justify-center">
                           <img
                             src={product.image}

@@ -47,10 +47,10 @@ export default function Banner2({ products }) {
       <div className="max-w-full">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-semibold text-gray-800 mb-4">
-            All Accessories
+            All Products
           </h1>
           <p className="text-lg text-gray-500">
-            Elevate your experience with premium accessories.
+            Elevate your experience with premium products.
           </p>
         </div>
 

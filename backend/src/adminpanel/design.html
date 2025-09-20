@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YugTech Admin Panel</title>
+    <title>Online Shopping Store Admin Panel</title>
     <link rel="stylesheet" href="design.css" />
     <link rel="icon" type="image/png" href="logo1.png" />
     <link
@@ -1587,13 +1587,7 @@
                 onclick="showTab('users-tab', 'user-table')"
                 ><i class="fas fa-user"></i> Users</label
               >
-              <input type="radio" id="tab5" name="tabs" class="tab-input" />
-              <label
-                for="tab5"
-                class="tab-label"
-                onclick="showTab('employees-tab', 'manage-employees')"
-                ><i class="fas fa-briefcase"></i> Employees</label
-              >
+
               <input type="radio" id="tab6" name="tabs" class="tab-input" />
               <label
                 for="tab6"
@@ -3819,7 +3813,6 @@
       setupTableSearch("delivered-orders-search-bar", "delivered-orders-body");
       setupTableSearch("cancelled-orders-search-bar", "cancelled-orders-body");
       setupTableSearch("search-bar", "products-body");
-      setupTableSearch("employee-search-bar", "employees-body");
     });
     // --- Enable search for all order tables (dashboard, manage, shipped, delivered, cancelled) ---
     function setupOrderTableSearch(inputId, tableBodyId) {

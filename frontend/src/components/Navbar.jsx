@@ -373,7 +373,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`shadow-md px-4 md:px-8 lg:px-40 py-2 flex items-center justify-between bg-white z-50 sticky top-0 ${
+      className={`shadow-md px-4 md:px-8 lg:px-40 py-4 flex items-center justify-between bg-white z-50 sticky top-0 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
       } transition-transform duration-300`}
     >
@@ -383,8 +383,8 @@ const Navbar = () => {
           className="text-xl text-black cursor-pointer lg:hidden"
           onClick={() => setMenuOpen(true)}
         />
-        <Link to="/" className="hover:brightness-50 brightness-0">
-          <img src="../logo.png" alt="Logo" className="w-23 md:w-30" />
+        <Link to="/" className="hover:brightness-50 brightness-0 ">
+          <img src="../logo.png" alt="Logo" className="w-18 md:w-22" />
         </Link>
       </div>
 

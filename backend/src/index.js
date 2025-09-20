@@ -40,6 +40,8 @@ import subcategoryRouter from "./routes/subcategory.route.js";
 import abishekRouter from "./routes/abishek.route.js";
 import { addMessage } from "./lib/chatStore.js";
 import chatRouter from "./routes/chat.route.js";
+import Stripe from "stripe";
+import paymentsRouter from "./routes/payments.route.js";
 
 const app = express();
 app.set("trust proxy", true); // Add at the top i need to push
@@ -49,13 +51,7 @@ const guestUsers = new Map(); // socket.id => timestamp i need to push
 const registeredUsers = new Map(); // authUserId => socket.id (or multiple)
 const origins =
   process.env.NODE_ENV === "production"
-    ? [
-        "https://yug-tech-rve5.vercel.app",
-        "https://yugindustries.com.np",
-        "https://www.yugindustries.com.np",
-        "https://yugtech.onrender.com",
-        "https://ab1shek.vercel.app/",
-      ]
+    ? ["https://try.vercel.app"]
     : ["http://localhost:8080", "http://localhost:5173"];
 // ✅ Create a new Socket.IO server instance
 export const io = new Server(server, {
@@ -326,6 +322,8 @@ setInterval(() => {
     registeredUsers: registeredUsers.size,
   });
 }, 5000);
+// Stripe webhook needs raw body, so mount its raw parser first
+app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -370,6 +368,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
+app.use("/api/payments", paymentsRouter);
 
 const fileFilter = (req, file, cb) => {
   // Allow images and videos

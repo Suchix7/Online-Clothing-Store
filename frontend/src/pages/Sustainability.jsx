@@ -99,8 +99,8 @@ export default function SustainabilitySection() {
               Our Path to a Greener Future
             </h1>
             <p className="text-xl md:text-2xl font-light leading-relaxed mb-12 animate-fade-in-delay">
-              At Yug Industries, we consider sustainability at every step — from
-              sourcing and production to delivery, usage, and recycling.
+              At Online Shopping Store, we consider sustainability at every step
+              — from sourcing and production to delivery, usage, and recycling.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
@@ -159,14 +159,15 @@ export default function SustainabilitySection() {
 
               <div className="w-full md:w-1/2 space-y-6">
                 <h2 className="text-3xl md:text-4xl font-medium text-gray-900">
-                  Sustainability Commitment at Yug Industries
+                  Sustainability Commitment at Online Shopping Store
                 </h2>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  At Yug Industries, we recognize our responsibility to build a
-                  sustainable future. As we expand our business in technology,
-                  real estate, hospitality, and travel, we are committed to
-                  integrating eco-friendly practices into our operations. Our
-                  approach to sustainability focuses on three key areas:
+                  At Online Shopping Store, we recognize our responsibility to
+                  build a sustainable future. As we expand our business in
+                  technology, real estate, hospitality, and travel, we are
+                  committed to integrating eco-friendly practices into our
+                  operations. Our approach to sustainability focuses on three
+                  key areas:
                 </p>
                 <button className="group flex items-center text-lg font-medium text-[#34a853] hover:text-[#2d8e47] transition-colors">
                   Learn more about our approach
@@ -204,7 +205,7 @@ export default function SustainabilitySection() {
                     <span>
                       <span className="font-medium">Sustainable Sourcing:</span>{" "}
                       We prioritize eco-friendly and energy-efficient technology
-                      products at YugTech.
+                      products at .
                     </span>
                   </li>
                   <li className="flex items-start">
@@ -281,7 +282,7 @@ export default function SustainabilitySection() {
                       <span className="font-medium">
                         Local Sourcing & Employment:
                       </span>{" "}
-                      Supporting Nepali suppliers and manufacturers,
+                      Supporting Australia suppliers and manufacturers,
                       strengthening the local economy.
                     </span>
                   </li>
@@ -291,8 +292,8 @@ export default function SustainabilitySection() {
                       <span className="font-medium">
                         Sustainable Real Estate Development 🏡:
                       </span>{" "}
-                      In YugRoom, ensuring energy-efficient housing solutions
-                      for property seekers.
+                      In Online Shopping Store, ensuring energy-efficient
+                      housing solutions for property seekers.
                     </span>
                   </li>
                   <li className="flex items-start">
@@ -301,8 +302,8 @@ export default function SustainabilitySection() {
                       <span className="font-medium">
                         Green Tourism Initiatives:
                       </span>{" "}
-                      In YugTravel, promoting eco-friendly travel packages and
-                      working with sustainable tourism partners.
+                      In Online Shopping Store, promoting eco-friendly travel
+                      packages and working with sustainable tourism partners.
                     </span>
                   </li>
                 </ul>
@@ -311,8 +312,8 @@ export default function SustainabilitySection() {
 
             <div className="text-center mt-16">
               <p className="text-xl font-medium text-gray-900">
-                At Yug Industries, sustainability is not just a choice—it's our
-                responsibility.
+                At Online Shopping Store, sustainability is not just a
+                choice—it's our responsibility.
               </p>
             </div>
           </div>
@@ -344,14 +345,15 @@ export default function SustainabilitySection() {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-medium mb-8">
-              🌟 The Future of Sustainability at Yug Industries
+              🌟 The Future of Sustainability at Online Shopping Store
             </h2>
 
             <p className="text-xl leading-relaxed mb-12">
-              Our long-term goal is to set an example in Nepal's business sector
-              by showing that profitability and sustainability can go hand in
-              hand. We are constantly exploring innovative solutions to minimize
-              our environmental impact while delivering high-quality services.
+              Our long-term goal is to set an example in Australia's business
+              sector by showing that profitability and sustainability can go
+              hand in hand. We are constantly exploring innovative solutions to
+              minimize our environmental impact while delivering high-quality
+              services.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">

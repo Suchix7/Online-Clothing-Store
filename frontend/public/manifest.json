@@ -1,6 +1,6 @@
 {
-  "name": "YugTech",
-  "short_name": "YugTech",
+  "name": "Online Shopping Store",
+  "short_name": "Online Shopping Store",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -1037,78 +1037,6 @@ const ProductDetails = () => {
 
   return (
     <>
-      {/* {product && (
-        <Helmet>
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://www.yugindustries.com.np/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: product.category,
-                  item: `https://www.yugindustries.com.np/products/${product.modelName.replace(
-                    /\s+/g,
-                    "-"
-                  )}`,
-                },
-              ],
-            })}
-          </script>
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org/",
-              "@type": "Product",
-              name: product.name,
-              image: [product.image || ""],
-              description: product.description || "",
-              brand: {
-                "@type": "Brand",
-                name: product.parentSubcategory || "YugTech",
-              },
-              review: {
-                "@type": "Review",
-                reviewRating: {
-                  "@type": "Rating",
-                  ratingValue: product.rating || "0",
-                  bestRating: "5",
-                },
-                author: {
-                  "@type": "Person",
-                  name: "Abishek Shrestha",
-                },
-              },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: product.ratingCount
-                  ? (product.totalRating / product.ratingCount).toFixed(1)
-                  : "0",
-                reviewCount: product.reviews,
-              },
-              offers: {
-                "@type": "Offer",
-                url: window.location.href,
-                priceCurrency: "NPR",
-                price: product.price,
-                priceValidUntil: "2025-12-31",
-                itemCondition: "https://schema.org/NewCondition",
-                availability: "https://schema.org/InStock",
-                seller: {
-                  "@type": "Organization",
-                  name: "YugTech",
-                },
-              },
-            })}
-          </script>
-        </Helmet>
-      )} */}
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow bg-gray-50">
@@ -1607,7 +1535,7 @@ const ProductDetails = () => {
                         Free Delivery
                       </h3>
                       <p className="text-xs text-gray-600 leading-snug">
-                        We deliver all across Nepal with zero shipping cost.
+                        We deliver all across Australia with zero shipping cost.
                       </p>
                     </div>
 
@@ -2021,7 +1949,7 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-b from-pink-50 to-white py-16 px-4 sm:px-6 text-center">
+              <div className="bg-gradient-to-b from-orange-50 to-white py-16 px-4 sm:px-6 text-center">
                 {/* Heading */}
                 <motion.div
                   className="relative z-10 mb-6"
@@ -2029,13 +1957,13 @@ const ProductDetails = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <h2 className="text-3xl sm:text-4xl font-bold text-pink-500 mb-4">
-                    Why YugTech?
+                  <h2 className="text-3xl sm:text-4xl font-bold text-orange-500 mb-4">
+                    Why Us?
                   </h2>
                   <p className="text-gray-700 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-                    We’re not just another gadget store—YugTech exists to bridge
-                    Nepal with global technology, offering trustworthy service,
-                    rapid delivery, and real value. Here’s what drives us:
+                    We’re not just another store to bridge we offer trustworthy
+                    service, rapid delivery, and real value. Here’s what drives
+                    us:
                   </p>
                 </motion.div>
 
@@ -2101,11 +2029,6 @@ const ProductDetails = () => {
                     </p>
                   </motion.div>
                 </div>
-
-                {/* Tagline */}
-                <p className="text-gray-600 text-xs sm:text-sm md:text-base italic">
-                  Built for Nepal. Inspired by You.
-                </p>
               </div>
 
               <hr className="border-gray-300" />

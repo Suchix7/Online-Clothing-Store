@@ -230,7 +230,7 @@ const ProductListing = ({ products, category }) => {
       >
         <div className="flex justify-between items-center pb-2 mb-4 px-2">
           <h2 className="text-lg md:text-xl font-medium text-black">
-            Best deals on <span className="font-semibold">{category}</span>
+            Best deals for <span className="font-semibold">{category}</span>
           </h2>
           {filteredProducts.length > 4 && (
             <button

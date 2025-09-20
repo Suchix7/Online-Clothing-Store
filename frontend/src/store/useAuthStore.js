@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 const BASE_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:8080"
-    : "https://yugtech.onrender.com";
+    : "https://try.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,

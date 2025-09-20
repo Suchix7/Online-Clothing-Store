@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { axiosInstance } from "../lib/axiosInstance.js";
@@ -12,14 +12,17 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
-
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import L from "leaflet";
+
+/* --------------------------- Leaflet marker icon --------------------------- */
 const markerIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
 
+/* ------------------------------ Map helpers ------------------------------- */
 const ChangeView = ({ center, zoom = 13 }) => {
   const map = useMap();
   useEffect(() => {
@@ -47,6 +50,65 @@ const LocationMarker = ({ location, onLocationSelect, setLocationPinned }) => {
   return position ? <Marker position={position} icon={markerIcon} /> : null;
 };
 
+/* ------------------------------ Pay Modal --------------------------------- */
+/** IMPORTANT: defined OUTSIDE Checkout so it doesn't remount each render */
+function PayModal({
+  open,
+  onClose,
+  onPay,
+  paying,
+  onCardReady,
+  onCardChange,
+  canPay,
+  cardOptions,
+  setLiveCardRef, // callback to store the live CardElement instance in parent
+}) {
+  return (
+    <div
+      className={`fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center ${
+        open ? "" : "hidden"
+      }`}
+    >
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+        <h3 className="text-lg font-semibold mb-4">Secure Payment</h3>
+        <div className="p-3 border rounded-md">
+          <CardElement
+            options={cardOptions}
+            onReady={(el) => {
+              console.log("[CardElement] ready");
+              onCardReady?.(true);
+              setLiveCardRef?.(el);
+            }}
+            onChange={(e) => {
+              console.log("[CardElement] change", e.complete);
+              onCardChange?.(e.complete);
+            }}
+          />
+        </div>
+        <div className="flex justify-end gap-3 mt-5">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-md border border-gray-300"
+            type="button"
+            disabled={paying}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onPay}
+            className="px-4 py-2 rounded-md bg-black text-white disabled:opacity-50"
+            disabled={paying || !canPay}
+            type="button"
+          >
+            {paying ? "Processing..." : "Pay now"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------- Checkout -------------------------------- */
 const Checkout = () => {
   const navigate = useNavigate();
   const reactLocation = useLocation();
@@ -59,16 +121,34 @@ const Checkout = () => {
   const { authUser } = useAuthStore();
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+
+  // Stripe
+  const stripe = useStripe();
+  const elements = useElements();
+  const cardOptions = useMemo(() => ({ hidePostalCode: false }), []);
+  const liveCardElRef = useRef(null); // actual mounted CardElement instance
+
+  // Helpers
+  const toStr = (v) => (v == null ? "" : String(v));
+  const safeSplit = (name = "") => {
+    const parts = toStr(name).trim().split(/\s+/);
+    const first = parts[0] || "";
+    const last = parts.length > 1 ? parts.slice(1).join(" ") : "";
+    return { first, last };
+  };
+
+  // Initial state
   const [formData, setFormData] = useState({
-    firstName: authUser?.fullName.split(" ")[0] || "",
-    lastName: authUser?.fullName.split(" ")[1] || "",
-    email: authUser?.email || "",
-    phone: authUser?.phoneNumber || "",
-    address: authUser?.shippingAddress?.address || "",
-    city: "Kathmandu",
-    landmark: authUser?.shippingAddress?.landmark || "",
+    firstName: safeSplit(authUser?.fullName).first,
+    lastName: safeSplit(authUser?.fullName).last,
+    email: toStr(authUser?.email),
+    phone: toStr(authUser?.phoneNumber),
+    address: toStr(authUser?.shippingAddress?.address),
+    city: "Sydney",
+    landmark: toStr(authUser?.shippingAddress?.landmark),
     shortnote: "",
   });
+
   const [errors, setErrors] = useState({});
   const [isOrdering, setIsOrdering] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -81,6 +161,18 @@ const Checkout = () => {
   const [municipalityList, setMunicipalityList] = useState([]);
   const [step, setStep] = useState(1);
 
+  const [showPay, setShowPay] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+  const [cardReady, setCardReady] = useState(false);
+  const [cardComplete, setCardComplete] = useState(false);
+  const [piInfo, setPiInfo] = useState({
+    id: "", // paymentIntentId
+    livemode: false,
+    account: "",
+  });
+
+  /* --------------------------- Load location data -------------------------- */
   useEffect(() => {
     axiosInstance
       .get("location?lang=english")
@@ -91,11 +183,13 @@ const Checkout = () => {
         console.error("Failed to load location data", err);
       });
   }, []);
+
   const provinces = Object.keys(locationData);
   const districts =
     selectedProvince && locationData[selectedProvince]
       ? Object.keys(locationData[selectedProvince])
       : [];
+
   useEffect(() => {
     if (
       selectedProvince &&
@@ -107,11 +201,9 @@ const Checkout = () => {
 
       if (Array.isArray(districtData)) {
         setMunicipalityList(districtData);
-        console.log("Municipalities (array):", districtData);
       } else if (typeof districtData === "object") {
         const allMunicipalities = Object.values(districtData).flat();
         setMunicipalityList(allMunicipalities);
-        console.log("Municipalities (nested object):", allMunicipalities);
       } else {
         console.warn("Unexpected districtData format:", districtData);
         setMunicipalityList([]);
@@ -121,21 +213,18 @@ const Checkout = () => {
     }
   }, [selectedProvince, selectedDistrict, locationData]);
 
-  // const deliveryCharge = 150.0;
-
+  /* --------------------------- Restore from auth --------------------------- */
   useEffect(() => {
     try {
       if (fromAuth) {
         const stored = sessionStorage.getItem("formData");
-        const formData = stored ? JSON.parse(stored) : {};
-        setFormData(formData);
-        if (formData.shippingAddress) {
-          setSelectedProvince(formData.shippingAddress.province || "");
-          setSelectedDistrict(formData.shippingAddress.district || "");
-          setSelectedMunicipality(formData.shippingAddress.municipality || "");
-          setUserLocation(
-            formData.shippingAddress.location || { lat: 0, lng: 0 }
-          );
+        const form = stored ? JSON.parse(stored) : {};
+        setFormData(form);
+        if (form.shippingAddress) {
+          setSelectedProvince(form.shippingAddress.province || "");
+          setSelectedDistrict(form.shippingAddress.district || "");
+          setSelectedMunicipality(form.shippingAddress.municipality || "");
+          setUserLocation(form.shippingAddress.location || { lat: 0, lng: 0 });
         }
       }
     } catch (err) {
@@ -143,6 +232,7 @@ const Checkout = () => {
     }
   }, [fromAuth]);
 
+  /* ------------------------------- Cart fetch ------------------------------ */
   const fetchCart = async () => {
     if (buyNow) {
       const buyNowData = sessionStorage.getItem("buyNow");
@@ -165,18 +255,9 @@ const Checkout = () => {
         try {
           const cartData = localStorage.getItem("cart");
           const savedCartItems = cartData ? JSON.parse(cartData) : [];
-
-          // const buyNowData = sessionStorage.getItem("buyNow");
-          // const buyNowItem = buyNowData ? JSON.parse(buyNowData) : null;
-
           const itemsArray = savedCartItems.filter((item) => item !== null);
           setCartItems(itemsArray);
           calculateTotal(itemsArray, "cart");
-
-          // if (buyNowItem && Object.keys(buyNowItem).length > 0) {
-          //   setBuynow([buyNowItem]);
-          //   calculateTotal(buyNowItem, "buyNow");
-          // }
         } catch (error) {
           console.error("Error loading cart data:", error);
           setCartItems([]);
@@ -187,30 +268,43 @@ const Checkout = () => {
       }
     }
   };
+
   const fetchUserInfo = async () => {
-    if (authUser) {
-      try {
-        const response = await axiosInstance.get(`/userinfo/${authUser._id}`);
-        setFormData({
-          firstName: response.data.fullName.split(" ")[0],
-          lastName: response.data.fullName.split(" ")[1],
-          email: response.data.email,
-          phone: response.data.phoneNumber || "",
-          address: response.data.shippingAddress?.address || "",
-          city: "Kathmandu",
-          landmark: response.data.shippingAddress?.landmark || "",
-          shortnote: "",
-        });
-        setSelectedProvince(response.data.shippingAddress?.province || "");
-        setSelectedDistrict(response.data.shippingAddress?.district || "");
-        setSelectedMunicipality(
-          response.data.shippingAddress?.municipality || ""
-        );
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+    if (!authUser) return;
+    try {
+      const { data } = await axiosInstance.get(`/userinfo/${authUser._id}`);
+      const { first, last } = safeSplit(data.fullName);
+      setFormData((f) => ({
+        ...f,
+        firstName: first,
+        lastName: last,
+        email: toStr(data.email),
+        phone: toStr(data.phoneNumber),
+        address: toStr(data.shippingAddress?.address),
+        city: "Kathmandu",
+        landmark: toStr(data.shippingAddress?.landmark),
+        shortnote: "",
+      }));
+      setSelectedProvince(toStr(data.shippingAddress?.province));
+      setSelectedDistrict(toStr(data.shippingAddress?.district));
+      setSelectedMunicipality(toStr(data.shippingAddress?.municipality));
+    } catch (e) {
+      console.error(e);
     }
   };
+
+  useEffect(() => {
+    fetchCart();
+    fetchUserInfo();
+  }, [authUser]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("buyNow");
+    };
+  }, []);
+
+  /* ---------------------------- Geolocation pin ---------------------------- */
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -222,26 +316,25 @@ const Checkout = () => {
         },
         (error) => {
           console.warn("Geolocation not available or denied", error);
-          // fallback to Kathmandu
-          setUserLocation({ lat: 27.7172, lng: 85.324 });
+          setUserLocation({ lat: 27.7172, lng: 85.324 }); // fallback: Kathmandu
         }
       );
     } else {
       setUserLocation({ lat: 0, lng: 0 }); // fallback
     }
   }, []);
+
   const handleLocateMe = () => {
     if (!("geolocation" in navigator)) {
       toast.error("Geolocation not supported in this browser");
       return;
     }
-
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const ll = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         setUserLocation(ll);
-        setLocationPinned(true); // ✅ mark location as chosen
-        setShowMap(true); // ✅ always open the map when this is triggered
+        setLocationPinned(true);
+        setShowMap(true);
       },
       (err) => {
         console.error(err);
@@ -250,29 +343,194 @@ const Checkout = () => {
     );
   };
 
-  useEffect(() => {
-    fetchCart();
-    fetchUserInfo();
-  }, [authUser]);
+  /* ----------------------------- Cart mapping ------------------------------ */
+  const toServerItems = () => {
+    const src = buyNow && buynow.length ? [buynow[0]] : cartItems || [];
+    return src
+      .filter(Boolean)
+      .map((it) => {
+        const productId =
+          it?.productId?._id ||
+          it?.product?._id ||
+          it?.productId ||
+          it?._id ||
+          it?.id ||
+          null;
 
-  // Add cleanup effect
-  useEffect(() => {
-    return () => {
-      // Cleanup function that runs when component unmounts
-      sessionStorage.removeItem("buyNow");
-    };
-  }, []);
+        const qty = Number(it?.qty ?? it?.quantity ?? 1) || 1;
 
+        const variantSku =
+          it?.variantSku ?? it?.sku ?? it?.variant?.sku ?? undefined;
+
+        return { productId, qty, variantSku };
+      })
+      .filter((x) => !!x.productId);
+  };
+
+  /* ------------------------------ Calculations ----------------------------- */
   const calculateTotal = (items, status) => {
     if (status === "buyNow") {
       return setTotalAmount(items.price * items.quantity);
     }
     const subtotal = items.reduce((sum, item) => {
-      // const price = parseFloat(item.currentPrice.replace(/[^\d.-]/g, "")) || 0;
       const price = item.price;
       return sum + price * item.quantity;
     }, 0);
     setTotalAmount(subtotal);
+  };
+
+  // inside Checkout.jsx
+  // REPLACE your current handlePayNow with this version
+  const handlePayNow = async () => {
+    if (!stripe || !elements || !clientSecret) return;
+
+    const card = liveCardElRef.current || elements.getElement(CardElement);
+    if (!card) {
+      toast.error("Payment form is still loading. Please wait a moment.");
+      return;
+    }
+
+    try {
+      setPaying(true);
+
+      const { paymentIntent, error } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card,
+            billing_details: {
+              name: `${(formData.firstName || "").trim()} ${(
+                formData.lastName || ""
+              ).trim()}`.trim(),
+              email: (formData.email || authUser?.email || "").trim(),
+              phone: (formData.phone || authUser?.phoneNumber || "").trim(),
+            },
+          },
+        }
+      );
+
+      if (error) {
+        console.error("Stripe confirm error:", error);
+        toast.error(error.message || "Payment failed");
+        setPaying(false);
+        return;
+      }
+
+      if (paymentIntent?.status === "succeeded") {
+        try {
+          // --- Build the SAME payload you used previously for /checkout ---
+          const shippingAddress = {
+            street: formData.address, // previously "street"
+            city: formData.city, // "Kathmandu" or your chosen city
+            landMark: formData.landmark, // previously "landMark"
+            location: locationPinned ? userLocation : null,
+            shortnote: formData.shortnote,
+            province: selectedProvince,
+            district: selectedDistrict,
+            municipality: selectedMunicipality,
+          };
+
+          const products = buyNow && buynow.length > 0 ? buynow : cartItems;
+
+          const checkoutBody = {
+            userId: authUser?._id, // same as before
+            username: authUser?.fullName, // same
+            mail: authUser?.email, // same
+            phoneNumber: authUser?.phoneNumber || formData.phone,
+            products, // SAME product array you send now
+            shippingAddress, // SAME shape as before
+            // (Optional) You can include paymentIntentId for your own reconciliation
+            paymentIntentId: paymentIntent.id,
+          };
+
+          // 1) Create order via the SAME route as before
+          const response = await axiosInstance.post("/checkout", checkoutBody);
+          if (!response) {
+            toast.error("Couldn't checkout");
+          }
+
+          // 🔽 CLEAR SERVER CART FOR LOGGED-IN USERS
+          try {
+            if (authUser?._id) {
+              await axiosInstance.delete(`/cart/remove/${authUser._id}`);
+            }
+          } catch (e) {
+            console.warn("Failed to clear server cart (non-blocking):", e);
+          }
+
+          if (!response) {
+            toast.error("Couldn't checkout");
+            setPaying(false);
+            setShowPay(false);
+            return;
+          }
+
+          // 2) Clear cart storage EXACTLY like before
+          try {
+            // If you also clear server cart elsewhere, add it here if desired
+            localStorage.setItem("cart", JSON.stringify([]));
+          } catch (e) {
+            console.warn("Cart clear (local) failed (non-blocking):", e);
+          }
+
+          // 3) Success UX + navigate home
+          setShowPay(false);
+          setPaying(false);
+          setCartItems([]);
+          setBuynow([]);
+          localStorage.removeItem("cart");
+          sessionStorage.removeItem("buyNow");
+          toast.success("Your order has been placed.");
+          navigate("/");
+
+          // 4) Send the SAME email call as before
+          try {
+            const mailData = {
+              to: authUser?.email || formData.email,
+              subject: "Thank you for your order!",
+              text: "Thanks",
+              name:
+                authUser?.fullName ||
+                `${formData.firstName} ${formData.lastName}`.trim(),
+              total: totalAmount, // number
+              createdAt: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
+              shippingAddress: {
+                street: formData.address,
+                city: formData.city,
+                landMark: formData.landmark,
+              },
+            };
+
+            await axiosInstance.post("/sendMail", mailData);
+          } catch (mailErr) {
+            console.log("Email send failed (non-blocking):", mailErr);
+          }
+
+          return;
+        } catch (orderErr) {
+          console.error("Order creation failed after payment:", orderErr);
+          setShowPay(false);
+          setPaying(false);
+          // Payment is captured; route home but inform user
+          toast.error(
+            "Payment captured, but we couldn't create the order. We'll contact you."
+          );
+          navigate("/");
+          return;
+        }
+      }
+
+      toast.error(`Payment status: ${paymentIntent?.status || "unknown"}`);
+      setPaying(false);
+    } catch (err) {
+      console.error("Payment exception:", err);
+      toast.error("Payment error");
+      setPaying(false);
+    }
   };
 
   const validateForm = () => {
@@ -280,19 +538,22 @@ const Checkout = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
 
-    if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-    if (!formData.phone) {
-      newErrors.phone = "Phone number is required";
-    } else if (!phoneRegex.test(formData.phone)) {
+    const first = toStr(formData.firstName).trim();
+    const last = toStr(formData.lastName).trim();
+    const email = toStr(formData.email || authUser?.email).trim();
+    const phoneDigits = toStr(formData.phone || authUser?.phoneNumber).replace(
+      /\D/g,
+      ""
+    );
+
+    if (!first) newErrors.firstName = "First name is required";
+    if (!last) newErrors.lastName = "Last name is required";
+    if (!email) newErrors.email = "Email is required";
+    else if (!emailRegex.test(email)) newErrors.email = "Invalid email format";
+
+    if (!phoneDigits) newErrors.phone = "Phone number is required";
+    else if (!phoneRegex.test(phoneDigits))
       newErrors.phone = "Invalid phone number (10 digits)";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -300,138 +561,109 @@ const Checkout = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      });
-    }
-  };
 
-  const handleAuth = (e) => {
-    validateForm();
-    if (!authUser) {
-      navigate("/auth", {
-        state: {
-          fromCheckout: reactLocation.pathname === "/checkout", // Compute directly
-        },
-      });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "phone" ? value.replace(/[^\d]/g, "") : value,
+    }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Clciked");
+
+    const shippingAddress = {
+      address: formData.address,
+      city: formData.city,
+      landmark: formData.landmark,
+      province: selectedProvince,
+      district: selectedDistrict,
+      municipality: selectedMunicipality,
+      location: locationPinned ? userLocation : null,
+    };
+
+    // 1) validate first
+    if (!validateForm()) return;
+
     try {
-      const shippingAddress = {
-        address: formData.address,
-        city: formData.city,
-        landmark: formData.landmark,
-        province: selectedProvince,
-        district: selectedDistrict,
-        municipality: selectedMunicipality,
-        location: locationPinned ? userLocation : null, // ✅ only include if pinned
-      };
-
-      if (validateForm()) {
-        if (!authUser) {
-          sessionStorage.setItem(
-            "formData",
-            JSON.stringify({ ...formData, shippingAddress: shippingAddress })
-          );
-          navigate("/auth", {
-            state: {
-              fromCheckout: location.pathname === "/checkout", // Compute directly
-            },
-          });
-        } else {
-          if (
-            !authUser?.shippingAddress?.province ||
-            !authUser?.shippingAddress?.district ||
-            !authUser?.shippingAddress?.municipality
-          ) {
-            const shipResponse = await axiosInstance.post(
-              `/shippingaddress/${authUser._id}`,
-              shippingAddress
-            );
-          }
-          setIsOrdering(true);
-
-          const response = await axiosInstance.post("/checkout", {
-            userId: authUser._id,
-            username: authUser.fullName,
-            mail: authUser.email,
-            phoneNumber: authUser.phoneNumber || formData.phone,
-            products: buynow.length > 0 ? buynow : cartItems,
-            shippingAddress: {
-              street: formData.address,
-              city: formData.city,
-              landMark: formData.landmark,
-              location: locationPinned ? userLocation : null, // ✅ conditional
-              shortnote: formData.shortnote,
-              province: selectedProvince,
-              district: selectedDistrict,
-              municipality: selectedMunicipality,
-            },
-          });
-
-          // toast.success(response.data.message);
-
-          if (!response) {
-            toast.error("Couldn't checkout");
-          }
-
-          setIsOrdering(false);
-          localStorage.setItem("cart", JSON.stringify([]));
-          navigate("/");
-          setBuynow([]);
-          sessionStorage.removeItem("buyNow");
-          toast.success("Your order has been placed.");
-          const data = {
-            to: authUser.email,
-            subject: "Thank you for your order!",
-            text: "Thanks",
-            name: authUser.fullName,
-            total: totalAmount,
-            createdAt: new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }),
-            shippingAddress: {
-              street: formData.address,
-              city: formData.city,
-              landMark: formData.landmark,
-            },
-          };
-
-          axiosInstance
-            .post("/sendMail", data)
-            .then(() => {
-              console.log("Mail sent successfully");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
+      // 2) if not logged in, save form + bounce to auth
+      if (!authUser) {
+        sessionStorage.setItem(
+          "formData",
+          JSON.stringify({ ...formData, shippingAddress })
+        );
+        return navigate("/auth", {
+          state: { fromCheckout: reactLocation.pathname === "/checkout" },
+        });
       }
+
+      // 3) save shipping address if missing
+      if (
+        !authUser?.shippingAddress?.province ||
+        !authUser?.shippingAddress?.district ||
+        !authUser?.shippingAddress?.municipality
+      ) {
+        await axiosInstance.post(
+          `/shippingaddress/${authUser._id}`, // NOTE: backticks + correct path
+          shippingAddress
+        );
+      }
+
+      setIsOrdering(true);
+
+      // 4) build items now (BEFORE using it)
+      const items = toServerItems();
+      if (!items.length) {
+        setIsOrdering(false);
+        toast.error("Your cart is empty or items are invalid.");
+        return;
+      }
+
+      console.log("POST /payments/create-intent payload:", {
+        customerEmail: formData.email || authUser?.email,
+        items,
+      });
+
+      // 5) create PI
+      const resp = await axiosInstance.post("/payments/create-intent", {
+        customerEmail: formData.email || authUser?.email,
+        items, // [{ productId, qty, variantSku }]
+      });
+      const data = resp.data;
+
+      if (!data?.clientSecret) {
+        setIsOrdering(false);
+        toast.error("Failed to initialize payment");
+        return;
+      }
+
+      // optional diagnostics from server if you returned them
+      setPiInfo({
+        id: data.paymentIntentId || "",
+        livemode: !!data.livemode,
+        account: data.account || "",
+      });
+
+      // 6) open pay modal
+      setClientSecret(data.clientSecret);
+      setShowPay(true);
+      setCardComplete(false);
+      setIsOrdering(false);
     } catch (error) {
-      console.log("Error while checking out: ", error);
-      toast.error("Failed to checkout");
+      console.error("Error starting checkout: ", error);
       setIsOrdering(false);
-    } finally {
-      setIsOrdering(false);
+      toast.error(error?.response?.data?.error || "Failed to start payment");
     }
   };
 
-  const handlePayment = () => {
-    alert("Payment feature will be available soon.");
-  };
+  useEffect(() => {
+    if (showPay && liveCardElRef.current) {
+      setCardReady(true);
+    }
+  }, [showPay]);
 
   if (cartItems.length === 0 && !buyNow) {
     return (
@@ -452,7 +684,6 @@ const Checkout = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
-
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left side - Form */}
         <div className="lg:w-2/3">
@@ -499,11 +730,7 @@ const Checkout = () => {
                     type="text"
                     id="lastName"
                     name="lastName"
-                    value={
-                      formData.lastName ||
-                      authUser?.fullName.split(" ")[1] ||
-                      ""
-                    }
+                    value={formData.lastName}
                     onChange={handleInputChange}
                     className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
                       errors.lastName
@@ -567,83 +794,8 @@ const Checkout = () => {
                 )}
               </div>
 
-              {/* <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Street Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                    errors.address
-                      ? "border-red-500 focus:ring-red-200"
-                      : "border-gray-300 focus:ring-blue-200"
-                  }`}
-                />
-                {errors.address && (
-                  <p className="mt-1 text-sm text-red-500">{errors.address}</p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value="Only Kathmandu"
-                    // onChange={handleInputChange}
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                      errors.city
-                        ? "border-red-500 focus:ring-red-200"
-                        : "border-gray-300 focus:ring-blue-200"
-                    }`}
-                    readOnly
-                  />
-                  {errors.city && (
-                    <p className="mt-1 text-sm text-red-500">{errors.city}</p>
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="landmark"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Landmark <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="landmark"
-                    name="landmark"
-                    value={formData.landmark}
-                    onChange={handleInputChange}
-                    placeholder="eg. School, hospital, bank, etc."
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                      errors.landmark
-                        ? "border-red-500 focus:ring-red-200"
-                        : "border-gray-300 focus:ring-blue-200"
-                    }`}
-                  />
-                  {errors.landmark && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.landmark}
-                    </p>
-                  )}
-                </div>
-              </div> */}
-              <div className="w-full  mx-auto border rounded shadow bg-white">
+              {/* Province → District → Address */}
+              <div className="w-full mx-auto border rounded shadow bg-white">
                 {/* Breadcrumb Navigation */}
                 <div className="flex border-b text-sm text-blue-600 font-medium">
                   <div
@@ -804,7 +956,6 @@ const Checkout = () => {
                       </MapContainer>
                     </div>
 
-                    {/* ✅ Place this outside the .h-64 container */}
                     <p className="text-sm text-black mt-2">
                       Selected Location: Latitude {userLocation.lat.toFixed(5)},
                       Longitude {userLocation.lng.toFixed(5)}
@@ -827,7 +978,7 @@ const Checkout = () => {
                   value={formData.shortnote}
                   onChange={handleInputChange}
                   placeholder="eg. Deliver my order at 4PM, I won't be availabe at office time, etc."
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-200`}
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-200"
                 />
               </div>
             </form>
@@ -843,9 +994,11 @@ const Checkout = () => {
 
             <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
               {buyNow
-                ? buynow.map((item) => (
+                ? buynow.map((item, i) => (
                     <div
-                      key={item.id || item._id}
+                      key={`${item._id || item.id || "noid"}-${
+                        item.variantSku || "novar"
+                      }-${i}`}
                       className="flex justify-between items-center border-b pb-4 gap-3"
                     >
                       <div className="flex items-center space-x-4">
@@ -868,17 +1021,15 @@ const Checkout = () => {
                       <div className="text-right">
                         <p className="text-sm font-medium text-gray-800">
                           $ {(item.price * item.quantity).toFixed(2)}
-                          {/* {(
-                          parseFloat(item.currentPrice.replace(/[^\d.-]/g, "")) *
-                          item.quantity
-                        ).toFixed(2)} */}
                         </p>
                       </div>
                     </div>
                   ))
-                : cartItems.map((item) => (
+                : cartItems.map((item, i) => (
                     <div
-                      key={item.id}
+                      key={`${item._id || item.id || "noid"}-${
+                        item.variantSku || "novar"
+                      }-${i}`}
                       className="flex justify-between items-center border-b pb-4 gap-3"
                     >
                       <div className="flex items-center gap-4">
@@ -913,12 +1064,6 @@ const Checkout = () => {
                 <span className="font-medium">${totalAmount.toFixed(2)}</span>
               </div>
 
-              {/* <div className="flex justify-between">
-                <span className="text-gray-600">Delivery</span>
-                <span className="font-medium">
-                  ${deliveryCharge.toFixed(2)}
-                </span>
-              </div> */}
               <div className="flex justify-between pt-3 border-t border-gray-200">
                 <span className="text-lg font-semibold">Total</span>
                 <span className="text-lg font-semibold">
@@ -941,19 +1086,6 @@ const Checkout = () => {
             </div>
 
             <button
-              onClick={handlePayment}
-              type="button"
-              className="w-full mt-6 bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 shadow-md hover:shadow-lg cursor-pointer"
-            >
-              Proceed to Payment
-            </button>
-
-            {/* <Link
-              to="/"
-              className="mt-4 inline-block text-center w-full text-black border border-black px-4 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
-            >
-            </Link> */}
-            <button
               onClick={handleSubmit}
               className="mt-4 flex justify-center text-center w-full text-black border border-black px-4 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200 gap-3 cursor-pointer"
               disabled={isOrdering}
@@ -970,6 +1102,22 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+
+      {/* --- Pay modal (always mounted, just hidden when closed) --- */}
+      <PayModal
+        open={showPay}
+        onClose={() => !paying && setShowPay(false)}
+        onPay={handlePayNow}
+        paying={paying}
+        onCardReady={(ready) => setCardReady(ready)}
+        onCardChange={(complete) => setCardComplete(complete)}
+        canPay={cardReady && cardComplete}
+        cardOptions={cardOptions}
+        setLiveCardRef={(el) => {
+          // In StrictMode, onReady can fire twice; keep the last non-null ref
+          if (el) liveCardElRef.current = el;
+        }}
+      />
     </div>
   );
 };

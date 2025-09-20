@@ -156,21 +156,25 @@ const AboutPage = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto hide-scrollbar border-b border-gray-200">
-            {["company", "team", "values", "history", "Yug Industries"].map(
-              (tab) => (
-                <button
-                  key={tab}
-                  className={`px-6 py-4 font-medium text-sm uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
-                    activeTab === tab
-                      ? "text-black-600 border-b-2 border-black-600"
-                      : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
-                  }`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </button>
-              )
-            )}
+            {[
+              "company",
+              "team",
+              "values",
+              "history",
+              "Online Shopping Store",
+            ].map((tab) => (
+              <button
+                key={tab}
+                className={`px-6 py-4 font-medium text-sm uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                  activeTab === tab
+                    ? "text-black-600 border-b-2 border-black-600"
+                    : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -181,7 +185,6 @@ const AboutPage = () => {
         {activeTab === "company" && (
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div className="space-y-8">
-              {/* YugTech Introduction */}
               <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center mb-6">
                   <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-4 shadow-md">
@@ -200,18 +203,20 @@ const AboutPage = () => {
                       />
                     </svg>
                   </div>
-                  <h2 className="text-3xl font-bold text-gray-800">YugTech</h2>
+                  <h2 className="text-3xl font-bold text-gray-800">
+                    Online Shopping Store
+                  </h2>
                 </div>
 
                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                   A proud member of the{" "}
                   <span className="font-semibold text-black">
-                    Yug Industries
+                    Online Shopping Store
                   </span>{" "}
                   family, committed to revolutionizing the tech shopping
-                  experience in Nepal. As a leading online technology retailer,
-                  we offer a diverse range of high-quality products designed for
-                  both individuals and businesses.
+                  experience in Australia. As a leading online technology
+                  retailer, we offer a diverse range of high-quality products
+                  designed for both individuals and businesses.
                 </p>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -321,8 +326,8 @@ const AboutPage = () => {
 
                 <p className="text-gray-600 leading-relaxed font-medium">
                   Whether you're upgrading your home, building your office
-                  setup, or exploring innovations, YugTech is your trusted
-                  source for everything tech in Nepal.
+                  setup, or exploring innovations, Online Shopping Store is your
+                  trusted source for everything tech in Australia.
                 </p>
               </div>
 
@@ -381,7 +386,7 @@ const AboutPage = () => {
                       />
                     </svg>
                     <p className="text-gray-500 font-medium group-hover:text-gray-700 transition-colors duration-300">
-                      Tech products showcase
+                      Clothing products showcase
                     </p>
                   </div>
                 </div>
@@ -417,7 +422,8 @@ const AboutPage = () => {
               <h2 className="text-4xl font-bold mb-4">Meet Our Leadership</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto"></div>
               <p className="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">
-                The brilliant minds driving innovation and growth at YugTech
+                The brilliant minds driving innovation and growth at Online
+                Shopping Store
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -697,16 +703,15 @@ const AboutPage = () => {
           </div>
         )}
 
-        {/* Yug Industries Section */}
-        {activeTab === "Yug Industries" && (
+        {activeTab === "Online Shopping Store" && (
           <div className="max-w-6xl mx-auto px-6 py-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                About Yug Industries
+                About Online Shopping Store
               </h2>
               <div className="w-24 h-1 bg-black mx-auto mb-6"></div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Shaping Nepal's digital future through innovation and
+                Shaping Australia's digital future through innovation and
                 accessibility
               </p>
             </div>
@@ -717,23 +722,24 @@ const AboutPage = () => {
                   Our Vision & Mission
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Yug Industries is a dynamic and forward-thinking company
-                  committed to building a technology-driven ecosystem in Nepal.
-                  Our mission is to bridge the gap between innovation and
-                  accessibility, providing seamless digital solutions across
-                  multiple industries.
+                  Online Shopping Store is a dynamic and forward-thinking
+                  company committed to building a clothing ecosystem in
+                  Australia. Our mission is to bridge the gap between innovation
+                  and accessibility, providing seamless digital solutions across
+                  multiple clothing industries.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  Driven by innovation and customer satisfaction, Yug Industries
-                  is dedicated to shaping the future of digital services in
-                  Nepal. Our commitment to quality, efficiency, and customer
-                  trust fuels our growth as we continue expanding our vision.
+                  Driven by innovation and customer satisfaction, Industries
+                  Online Shopping Store is dedicated to shaping the future of
+                  digital services in Australia. Our commitment to quality,
+                  efficiency, and customer trust fuels our growth as we continue
+                  expanding our vision.
                 </p>
               </div>
               <div className="bg-black p-8 rounded-xl shadow-sm border border-gray-100">
                 <img
                   src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                  alt="Yug Industries Ecosystem"
+                  alt="Online Shopping Store"
                   className="rounded-lg shadow-md w-full h-auto"
                 />
               </div>
@@ -746,7 +752,7 @@ const AboutPage = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   {
-                    name: "YugTech",
+                    name: "Online Shopping Store",
                     description:
                       "Your go-to online marketplace for the latest tech products",
                     icon: "💻",
@@ -754,21 +760,21 @@ const AboutPage = () => {
                     bg: "bg-blue-50",
                   },
                   {
-                    name: "YugRoom",
+                    name: "Online Shopping Store",
                     description: "Simplifying real estate and rental services",
                     icon: "🏠",
                     color: "text-purple-600",
                     bg: "bg-purple-50",
                   },
                   {
-                    name: "YugInn",
+                    name: "Online Shopping Store",
                     description: "Elevating the hospitality experience",
                     icon: "🏨",
                     color: "text-green-600",
                     bg: "bg-green-50",
                   },
                   {
-                    name: "YugTravel",
+                    name: "Online Shopping Store",
                     description: "Making travel easier and more accessible",
                     icon: "✈️",
                     color: "text-orange-600",

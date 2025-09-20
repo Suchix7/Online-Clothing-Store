@@ -4,16 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const headlines = [
   "Trusted by Thousands. Loved by All. 💙",
-  "100% Satisfied Customers Across Nepal.",
-  "Nepal’s Most Reliable Tech Marketplace. ⚡",
+  "100% Satisfied Customers Across Australia.",
+  "Australia Most Reliable Clothing Marketplace. ⚡",
   "Fast Delivery. Genuine Products. 100% Satisfaction.",
-  "Your Trusted Destination for All Things Tech. 🛒",
+  "Your Trusted Destination for All Things Clothes. 🛒",
   "Serving 100% Happy Customers & Growing Every Day.",
-  "Tech You Can Trust. Service You’ll Love. ✅",
+  "Shopping You Can Trust. Service You’ll Love. ✅",
   "100% Satisfaction Guaranteed.",
   "Thousands of Happy Shoppers. One Trusted Brand",
   "Genuine Products. Smooth Experience. 100% Satisfaction.",
-  "From Phones to Smart Homes—We’ve Got You Covered! 🔧📱🏠",
+  "From Clothes to Shoes—We’ve Got You Covered! 🔧📱🏠",
 ];
 
 const getRandomHeadline = () => {

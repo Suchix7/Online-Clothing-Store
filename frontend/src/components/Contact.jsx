@@ -165,7 +165,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Our Location</h3>
-                    <p className="text-gray-300">New Road Gate, Kathmandu</p>
+                    <p className="text-gray-300">Sydney, Australia</p>
                   </div>
                 </div>
 

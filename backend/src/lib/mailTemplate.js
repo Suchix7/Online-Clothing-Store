@@ -44,7 +44,7 @@ export const mailCode = (name, total, createdAt, shippingAddress, id) => {
                   </v:roundrect>
                 <![endif]-->
                 <!--[if !mso]><!-- -->
-                <a href="https://www.yugindustries.com.np/profile" target="_blank" style="display:inline-block; padding:12px 22px; background:#ffffff; color:#000000; text-decoration:none; font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:700; line-height:20px; border-radius:999px; border:1px solid #ffffff;">
+                <a href="http://localhost:5173/profile" target="_blank" style="display:inline-block; padding:12px 22px; background:#ffffff; color:#000000; text-decoration:none; font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:700; line-height:20px; border-radius:999px; border:1px solid #ffffff;">
                   Track Your Order
                 </a>
                 <!--<![endif]-->
@@ -203,7 +203,7 @@ export const mailCode = (name, total, createdAt, shippingAddress, id) => {
             <tr>
               <td align="center" style="padding:18px 26px 34px 26px;">
                 <div style="font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:18px; color:#8a8a8a;">
-                  New Road Gate, Kathmandu, Nepal
+                  Sydney, Australia
                 </div>
               </td>
             </tr>

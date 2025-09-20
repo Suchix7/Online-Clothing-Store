@@ -3,7 +3,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import { axiosInstance } from "../lib/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 
-function TopElectronicsBrands() {
+function TopBrands() {
   const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -150,14 +150,11 @@ function TopElectronicsBrands() {
     <div className="w-full mx-auto lg:px-40 md:py-12 py-6 relative">
       <div className="flex justify-between items-center mb-4 px-2">
         <h2 className="text-lg">
-          Top{" "}
-          <span className="text-black font-semibold pb-1">
-            Electronics Brands
-          </span>
+          Top <span className="text-black font-semibold pb-1">Products</span>
         </h2>
         <button
           onClick={toggleView}
-          className="group flex items-center px-4 py-2 text-sm font-medium text-slate-700 hover:text-white bg-white hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 border border-slate-200 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+          className="group flex items-center px-4 py-2 text-sm font-medium text-slate-700 hover:text-white bg-white hover:bg-gray-100 border-slate-200 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105"
         >
           {expanded ? "View Less" : "View All"}{" "}
           <ChevronRight className="h-4 w-4 ml-1" />
@@ -269,4 +266,4 @@ function TopElectronicsBrands() {
   );
 }
 
-export default TopElectronicsBrands;
+export default TopBrands;

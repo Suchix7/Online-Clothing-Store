@@ -7,6 +7,14 @@ const productSchema = new mongoose.Schema(
     name: { type: String, required: true }, // full product title
     costPrice: Number,
     sellingPrice: { type: Number, required: true },
+    // ✅ Add near your price fields
+    currency: { type: String, default: "usd" }, // keep USD in test mode
+    priceMinor: { type: Number }, // derived: sellingPrice * 100
+
+    // Optional but handy if you later sync catalog -> Stripe
+    stripeProductId: { type: String },
+    stripePriceId: { type: String },
+    sku: { type: String }, // you already have sku inside variant; this one is for base product
 
     // Normalize naming for search (keep old fields for UI if you want)
     parentCategory: { type: String, required: true }, // e.g., "Mobiles"
@@ -205,6 +213,22 @@ productSchema.pre("save", function (next) {
     this.description,
   ].filter(Boolean);
   this.searchText = bits.join(" ").replace(/\s+/g, " ").trim();
+  // derive priceMinor from sellingPrice if not set
+  if (typeof this.sellingPrice === "number") {
+    this.priceMinor = Math.round(this.sellingPrice * 100);
+  }
+
+  // derive variant minor prices if variants exist
+  if (Array.isArray(this.variant)) {
+    this.variant = this.variant.map((v) => ({
+      ...v,
+      variantSP: v.variantSP, // keep as display (e.g., 19.99)
+      variantSPMinor:
+        typeof v.variantSP === "number"
+          ? Math.round(v.variantSP * 100)
+          : undefined,
+    }));
+  }
 
   // Cheap popularity default from sold if not set
   if (!this.popularity && typeof this.sold === "number")

@@ -16,13 +16,14 @@ const HeroCarousel = ({ products }) => {
   useEffect(() => {
     const generateGradient = () => {
       const colors = [
-        "from-indigo-500 to-blue-600",
-        "from-purple-600 to-pink-500",
-        "from-amber-500 to-orange-600",
-        "from-emerald-500 to-teal-600",
-        "from-rose-500 to-pink-500",
-        "from-violet-600 to-indigo-600",
+        "bg-indigo-700", // deep blue-indigo
+        "bg-purple-700", // strong purple
+        "bg-amber-600", // dark amber (orange-gold)
+        "bg-emerald-600", // deep green
+        "bg-rose-800", // dark rose red
+        "bg-violet-700", // strong violet
       ];
+
       return colors[Math.floor(Math.random() * colors.length)];
     };
 
@@ -136,7 +137,6 @@ const HeroCarousel = ({ products }) => {
     let integerPart = parts[0];
     const decimalPart = parts[1];
 
-    // Format integer part using Nepali/Indian number system
     let lastThree = integerPart.slice(-3);
     const otherNumbers = integerPart.slice(0, -3);
 

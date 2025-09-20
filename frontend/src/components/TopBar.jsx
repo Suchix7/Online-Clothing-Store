@@ -12,24 +12,24 @@ const TopBar = () => {
 
   // All phrases now include {name} placeholder
   const phrases = [
-    "🙏 Hey {name}, it's {day}! Welcome to YugTech!",
+    "🙏 Hey {name}, it's {day}! Welcome to Online Shopping Store!",
     "🙏 Happy {day} {name}! Explore amazing deals!",
     "🙏 It's {day} {name}! Relax and shop with us!",
-    "🙏 Welcome {name}, Start your {day} with YugTech!",
-    "🙏 Hello {name}, Find the best tech deals this {day}!",
+    "🙏 Welcome {name}, Start your {day} with Online Shopping Store!",
+    "🙏 Hello {name}, Find the best clothes deals this {day}!",
     "🙏 Let's kickstart this {day} together {name}!",
-    "🙏 Namaste {name}, Grab hot {day} deals at YugTech!",
+    "🙏 Namaste {name}, Grab hot {day} deals at Online Shopping Store!",
     "🙏 Discover innovations this {day} {name}!",
-    "🙏 Shop smart this {day} {name} with YugTech!",
+    "🙏 Shop smart this {day} {name} with Online Shopping Store!",
     "🙏 Hi {name}, {day} Shopping made easy with us!",
-    "🙏 Find your {day} tech essentials {name}!",
+    "🙏 Find your {day} cloth essentials {name}!",
     "🙏 Welcome {name}, Let us deliver happiness this {day}!",
     "🙏 Celebrate {day} with us {name}!",
-    "🙏 Hello {name}, Upgrade your tech this {day}!",
+    "🙏 Hello {name}, Upgrade your shopping this {day}!",
     "🙏 Fast {day} delivery for you {name}!",
     "🙏 Enjoy {day} vibes with us {name}!",
     "🙏 Hi {name}, Shop and save big this {day}!",
-    "🙏 Hey {name}, Get your {day} tech delivered fast!",
+    "🙏 Hey {name}, Get your {day} clothes delivered fast!",
   ];
 
   const days = [
@@ -67,7 +67,7 @@ const TopBar = () => {
               transition={{ duration: 0.5 }}
             >
               <span className="hidden md:inline italic hover:text-gray-200 transition-colors animate-pulse">
-                100% Satisfied Customers across Nepal.
+                100% Satisfied Customers across Australia.
               </span>
             </motion.div>
           </AnimatePresence>

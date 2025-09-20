@@ -872,7 +872,7 @@ messagesBox.addEventListener("click", (e) => {
     },
     {
       title: "Discount",
-      reply: "Use code YUG10 at checkout for 10% off (limited time).",
+      reply: "Use code OS10 at checkout for 10% off (limited time).",
     },
   ];
 

@@ -8,7 +8,7 @@ const QRCodeComponent = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
 
   useEffect(() => {
-    QRCode.toDataURL("https://www.yugindustries.com.np/install?install=true")
+    QRCode.toDataURL("https://www.try.com/install?install=true")
       .then((url) => {
         setQrCodeUrl(url);
       })
@@ -120,7 +120,7 @@ const Footer = () => {
             {/* Our Company */}
             <div className="sm:text-left">
               <p className="text-xl mb-4 flex">Newsletter</p>
-              <div className="flex w-full">
+              <div className="flex w-full flex-col lg:flex-row">
                 <input
                   type="text"
                   placeholder="Enter your email"

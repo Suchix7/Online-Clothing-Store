@@ -302,7 +302,8 @@ const FAQAccordion = () => {
       answer: (
         <>
           <p className="mb-3">
-            By using the YugTech website, you agree to the following terms:
+            By using the Online Shopping Store website, you agree to the
+            following terms:
           </p>
           <p className="font-semibold text-green-600 mb-1">
             ✅ Account Creation:
@@ -355,7 +356,8 @@ const FAQAccordion = () => {
       answer: (
         <>
           <p className="mb-3">
-            At YugTech, we prioritize customer satisfaction and fair treatment.
+            At Online Shopping Store, we prioritize customer satisfaction and
+            fair treatment.
           </p>
           <p className="font-semibold text-green-600 mb-1">
             ✅ Your Rights as a Customer:
@@ -395,7 +397,7 @@ const FAQAccordion = () => {
               Payments must be made in full before or at the time of delivery.
             </li>
             <li>
-              All prices are listed in Nepali Rupees (NPR) unless stated
+              All prices are listed in Australia Dollar ($) unless stated
               otherwise.
             </li>
           </ul>

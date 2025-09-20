@@ -69,16 +69,12 @@ const LandingPage = ({ products }) => {
             <Hero products={products} />
           </SlideUpSection>
 
-          <SlideUpSection delay={0.05}>
-            <Category />
-          </SlideUpSection>
-
           <SlideUpSection delay={0.1}>
             <RecentlyViewed products={products} />
           </SlideUpSection>
 
           <SlideUpSection delay={0.15}>
-            <ProductListing product={products} category="Shoes" />
+            <ProductListing product={products} category="Kids" />
           </SlideUpSection>
 
           <SlideUpSection delay={0.2}>
@@ -86,7 +82,7 @@ const LandingPage = ({ products }) => {
           </SlideUpSection>
 
           <SlideUpSection delay={0.25}>
-            <ProductListing product={products} category="Shirts" />
+            <ProductListing product={products} category="Women" />
           </SlideUpSection>
 
           <SlideUpSection delay={0.3}>
@@ -98,7 +94,7 @@ const LandingPage = ({ products }) => {
           </SlideUpSection>
 
           <SlideUpSection delay={0.4}>
-            <ProductListing product={products} category="Pants" />
+            <ProductListing product={products} category="Men" />
           </SlideUpSection>
 
           <SlideUpSection delay={0.45}>

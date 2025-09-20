@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/user.model.js";
-
+import nodemailer from "nodemailer";
 const router = express.Router();
 
 const VERIFICATION_CODE_EXPIRY = 10 * 60 * 1000;

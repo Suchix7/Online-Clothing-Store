@@ -63,7 +63,7 @@ const PWAInstall = () => {
   return (
     <div className="p-6 max-w-md mx-auto text-center shadow-lg min-h-screen flex justify-center items-center flex-col bg-white">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        📲 Install YugTech App
+        📲 Install Online Shopping Store App
       </h2>
 
       {isInstalled ? (
