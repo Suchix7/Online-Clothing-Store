@@ -1,1 +1,5 @@
 "backend/src/lib/credentials.json" 
+# env & secrets
+.env
+*.env
+backend/.env
