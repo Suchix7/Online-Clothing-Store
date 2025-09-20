@@ -4,3 +4,6 @@
 *.env
 backend/.env
 ".env`r`n*.env`r`nbackend/.env" 
+.env
+*.env
+backend/.env
