@@ -213,7 +213,6 @@ const Checkout = () => {
     }
   }, [selectedProvince, selectedDistrict, locationData]);
 
-  /* --------------------------- Restore from auth --------------------------- */
   useEffect(() => {
     try {
       if (fromAuth) {
@@ -794,7 +793,7 @@ const Checkout = () => {
                 )}
               </div>
 
-              {/* Province → District → Address */}
+              {/* State → Suburb → Address */}
               <div className="w-full mx-auto border rounded shadow bg-white">
                 {/* Breadcrumb Navigation */}
                 <div className="flex border-b text-sm text-blue-600 font-medium">
@@ -804,7 +803,7 @@ const Checkout = () => {
                       step === 1 ? "border-b-2 border-blue-600" : ""
                     }`}
                   >
-                    {selectedProvince || "Select Province"}
+                    {selectedProvince || "Select State"}
                   </div>
                   {selectedProvince && (
                     <div
@@ -813,7 +812,7 @@ const Checkout = () => {
                         step === 2 ? "border-b-2 border-blue-600" : ""
                       }`}
                     >
-                      {selectedDistrict || "Select District"}
+                      {selectedDistrict || "Select Suburb"}
                     </div>
                   )}
                   {selectedDistrict && (
@@ -828,11 +827,11 @@ const Checkout = () => {
                   )}
                 </div>
 
-                {/* Step 1: Province */}
+                {/* Step 1: State */}
                 {step === 1 && (
                   <div className="p-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Province
+                      State
                     </label>
                     <select
                       value={selectedProvince}
@@ -844,7 +843,7 @@ const Checkout = () => {
                       }}
                       className="w-full px-4 py-2 border rounded-md"
                     >
-                      <option value="">Select Province</option>
+                      <option value="">Select State</option>
                       {provinces.map((prov) => (
                         <option key={prov} value={prov}>
                           {prov}
@@ -854,11 +853,11 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Step 2: District */}
+                {/* Step 2: Suburb */}
                 {step === 2 && selectedProvince && (
                   <div className="p-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      District
+                      Suburb
                     </label>
                     <select
                       value={selectedDistrict}
@@ -869,7 +868,7 @@ const Checkout = () => {
                       }}
                       className="w-full px-4 py-2 border rounded-md"
                     >
-                      <option value="">Select District</option>
+                      <option value="">Select Suburb</option>
                       {districts.map((dist) => (
                         <option key={dist} value={dist}>
                           {dist}

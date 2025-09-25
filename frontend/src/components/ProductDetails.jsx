@@ -1608,13 +1608,6 @@ const ProductDetails = () => {
                         Add to Cart
                       </button>
                     )}
-                    <button
-                      className="px-6 py-3 border border-black text-black rounded-lg hover:bg-gray-100 cursor-pointer transition flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={buyNow}
-                      disabled={product.stock <= 0}
-                    >
-                      Buy Now
-                    </button>
                   </div>
 
                   {/* Additional Details */}
