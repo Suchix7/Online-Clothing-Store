@@ -100,7 +100,6 @@ io.on("connection", (socket) => {
     socket.join("admins");
     for (const [userId, { socketId, username }] of registeredUsers.entries()) {
       socket.emit("admin:user-status", { userId, connected: true });
-      // (optional) also emit subscribed for consistency
       socket.emit("user:subscribed", { userId, username });
     }
   });
@@ -709,7 +708,22 @@ app.post("/api/contactus", async (req, res) => {
     res.status(500).json({ error: "Failed to send email" });
   }
 });
+app.post("/api/validate", async (req, res) => {
+  const { ids } = req.body;
 
+  if (!ids || !Array.isArray(ids)) {
+    return res.status(400).json({ message: "Invalid product IDs provided." });
+  }
+
+  try {
+    // Find all products that match the provided IDs
+    const products = await Product.find({ _id: { $in: ids } }).select("_id");
+    res.status(200).json({ products });
+  } catch (error) {
+    console.error("Error validating products:", error);
+    res.status(500).json({ message: "Server error." });
+  }
+});
 app.post("/api/sendMail", async (req, res) => {
   const { to, subject, text, name, total, createdAt, shippingAddress, id } =
     req.body;

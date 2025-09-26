@@ -389,7 +389,7 @@ const FAQAccordion = () => {
           <ul className="list-disc pl-5 mb-3 space-y-1">
             <li>Cash on Delivery (COD)</li>
             <li>Bank Transfers</li>
-            <li>Digital Wallets (e.g., eSewa, Khalti, etc.)</li>
+            <li>Digital Wallets (e.g., Stripe,  etc.)</li>
           </ul>
           <p className="font-semibold text-green-600 mb-1">✅ Payment Terms:</p>
           <ul className="list-disc pl-5 mb-3 space-y-1">
@@ -417,8 +417,8 @@ const FAQAccordion = () => {
             is available to assist you.
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>📧 Email: testproject7828@gmail.com</li>
-            <li>📞 Phone: +977-9851342116, +977-9848917128</li>
+            <li>📧 Email: Hangerclothing@nsw.colthing.au</li>
+            <li>📞 Phone: +61 450 387 789, +61 456 889 243</li>
             <li>🕒 Customer Support Hours: 10 AM – 6 PM (Sunday – Friday)</li>
           </ul>
         </>

@@ -1,17 +1,60 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import axios from "axios"; // Assuming you use axios for API calls
 
 const RecentlyViewed = () => {
   const [recentProducts, setRecentProducts] = useState([]);
   const carouselRef = useRef(null);
 
   useEffect(() => {
-    const recentlyViewed =
-      JSON.parse(localStorage.getItem("recentlyViewed")) || [];
-    if (recentlyViewed.length > 0) {
-      setRecentProducts([...recentlyViewed].reverse());
-    }
+    const fetchAndValidateProducts = async () => {
+      const recentlyViewed =
+        JSON.parse(localStorage.getItem("recentlyViewed")) || [];
+      if (recentlyViewed.length === 0) {
+        setRecentProducts([]);
+        return;
+      }
+
+      // Reverse the array to show the most recent first
+      const uniqueProductIds = [
+        ...new Set(recentlyViewed.map((p) => p._id)),
+      ].reverse();
+
+      try {
+        // Make an API call to check if products exist
+        const response = await axios.post(
+          "http://localhost:8080/api/validate",
+          {
+            ids: uniqueProductIds,
+          }
+        );
+
+        const validProducts = response.data.products;
+
+        // Filter the recentlyViewed list to only include valid products
+        const filteredProducts = recentlyViewed.filter((localProduct) =>
+          validProducts.some(
+            (validatedProduct) => validatedProduct._id === localProduct._id
+          )
+        );
+
+        // Update localStorage with the validated products
+        localStorage.setItem(
+          "recentlyViewed",
+          JSON.stringify(filteredProducts)
+        );
+
+        setRecentProducts(filteredProducts.reverse());
+      } catch (error) {
+        console.error("Failed to validate recently viewed products:", error);
+        // Fallback: clear the local storage to prevent future errors
+        localStorage.removeItem("recentlyViewed");
+        setRecentProducts([]);
+      }
+    };
+
+    fetchAndValidateProducts();
   }, []);
 
   const scrollCarousel = (direction) => {

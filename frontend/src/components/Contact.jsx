@@ -165,7 +165,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Our Location</h3>
-                    <p className="text-gray-300">Sydney, Australia</p>
+                    <p className="text-gray-300">
+                      level 14/233 Castlereagh St, Sydney NSW 2000
+                    </p>
                   </div>
                 </div>
 
@@ -175,7 +177,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold">Email Us</h3>
-                    <p className="text-gray-300">testproject7828@gmail.com</p>
+                    <p className="text-gray-300">
+                      Hangerclothing@nsw.colthing.au
+                    </p>
                   </div>
                 </div>
 
@@ -186,7 +190,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold">Call Us</h3>
                     <p className="text-gray-300">
-                      +977-9851342116, +977-9848917128
+                      +61 450 387 789, +61 456 889 243
                     </p>
                   </div>
                 </div>
