@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import axios from "axios"; // Assuming you use axios for API calls
+import axios from "axios";
+import { axiosInstance } from "../lib/axiosInstance.js";
 
 const RecentlyViewed = () => {
   const [recentProducts, setRecentProducts] = useState([]);
@@ -22,13 +23,9 @@ const RecentlyViewed = () => {
       ].reverse();
 
       try {
-        // Make an API call to check if products exist
-        const response = await axios.post(
-          "http://localhost:8080/api/validate",
-          {
-            ids: uniqueProductIds,
-          }
-        );
+        const response = await axiosInstance.post("/validate", {
+          ids: uniqueProductIds,
+        });
 
         const validProducts = response.data.products;
 
